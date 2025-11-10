@@ -1,7 +1,7 @@
 ; =========================================================
 ; NSX4004 Project - Intel 4004 Neural Network Experiments
 ; File: infr4004.asm
-; Copyright (c) 2025 NSX4004 Project Authors
+; Copyright (c) 2025 Neural Splines, LLC - Licensed under AGPL-3.0-or-later
 ; License: GNU AGPL-3.0-or-later
 ; =========================================================
 
