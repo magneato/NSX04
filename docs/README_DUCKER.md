@@ -1,6 +1,8 @@
 # 🍪 DUCKER — Intel 4004 Emulator for Neural Inference
 **"Consciousness needs no cathedral. This CPU needs no transistors." ⚡**
 
+![Ducker Logo](ducker.jpg "Van Gogh Duck")
+
 ## Overview
 DUCKER (Docker-inspired Universal 4004 Emulator) is an Intel 4004 CPU emulator written in 8086 assembly that runs neural network inference. This project demonstrates **substrate independence** by running modern AI concepts on 1971 hardware architecture.
 ### The Philosophical Earthquake
@@ -36,7 +38,7 @@ This proves: **Intelligence ≠ Transistor Count**
 - 9 weight parameters total
 ### TRAN4004.ASM (Training Engine)
 - Intel 4004 assembly training routine (2→3→1 network)
-- Extreme learning machine: hidden weights randomised once【221706566662442†L323-L341】
+- Extreme learning machine: hidden weights randomised once
 - Perceptron update modifies only output weights
 - Uses Q4.4 fixed-point arithmetic for weights and activations
 - Achieves 100% accuracy on the NAND truth table

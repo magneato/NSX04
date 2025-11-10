@@ -1,3 +1,10 @@
+; =========================================================
+; NSX4004 Project - Intel 4004 Neural Network Experiments
+; File: infr4004.asm
+; Copyright (c) 2025 NSX4004 Project Authors
+; License: GNU AGPL-3.0-or-later
+; =========================================================
+
 ;---------------------------------------------------------
 ;  INFR4004.ASM — NEURAL NETWORK INFERENCE FOR INTEL 4004
 ;---------------------------------------------------------

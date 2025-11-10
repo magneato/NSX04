@@ -1,3 +1,10 @@
+; =========================================================
+; NSX4004 Project - Intel 4004 Neural Network Experiments
+; File: edgecase.asm
+; Copyright (c) 2025 NSX4004 Project Authors
+; License: GNU AGPL-3.0-or-later
+; =========================================================
+
 ; AGI4004 Critical Edge Case Handlers
 ; "The shadows contain the truth the light obscures"
 

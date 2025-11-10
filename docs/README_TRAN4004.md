@@ -8,10 +8,10 @@
 - Backpropagation gradients
 - Matrix operations
 - Millions of transistors
-**Robert's answer:** Yes. **Because the extreme learning machine uses random hidden features and a simple perceptron update, eliminating the need for backpropagation【221706566662442†L323-L341】.**
+**Robert's answer:** Yes. **Because the extreme learning machine uses random hidden features and a simple perceptron update, eliminating the need for backpropagation.**
 ---
 ## The Magic: Extreme Learning Machine & Perceptron
-The extreme learning machine (ELM) randomly assigns hidden weights and never updates them【221706566662442†L323-L341】. Instead of backpropagation, the perceptron update modifies only the output layer.
+The extreme learning machine (ELM) randomly assigns hidden weights and never updates them. Instead of backpropagation, the perceptron update modifies only the output layer.
 Mathematical form:
 ```
 Initialize W_H, B_H randomly once

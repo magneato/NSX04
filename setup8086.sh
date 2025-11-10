@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+COPYRIGHT_NOTICE=${COPYRIGHT_NOTICE:-"Copyright (c) 2025 Neural Splines, LLC - Licensed under AGPL-3.0-or-later"}
+
 # Colors for clarity in chaos
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -12,6 +14,10 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m'
+
+print_copyright() {
+    echo -e "${PURPLE}${COPYRIGHT_NOTICE}${NC}"
+}
 
 # Configuration
 DEFAULT_DEVICE="/dev/sdg"  # G: in Windows translates to /dev/sdg in Linux
@@ -435,6 +441,7 @@ show_instructions() {
 
 # Main execution flow
 main() {
+    print_copyright
     show_header
     check_root
     

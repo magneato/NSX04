@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+COPYRIGHT_NOTICE=${COPYRIGHT_NOTICE:-"Copyright (c) 2025 Neural Splines, LLC - Licensed under AGPL-3.0-or-later"}
+
 # Colors for the interface
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -13,6 +15,10 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 WHITE='\033[1;37m'
 NC='\033[0m'
+
+print_copyright() {
+    echo -e "${PURPLE}${COPYRIGHT_NOTICE}${NC}"
+}
 
 # Global variables
 CURRENT_MODE="GEOMETRIC"
@@ -48,6 +54,7 @@ show_header() {
                         🍪 NOM NOM - 4 bits at a time 🍪
 EOF
     echo -e "${NC}"
+    print_copyright
 }
 
 # Function to display current status
