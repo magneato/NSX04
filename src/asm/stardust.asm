@@ -1,3 +1,10 @@
+; =========================================================
+; NSX4004 Project - Intel 4004 Neural Network Experiments
+; File: stardust.asm
+; Copyright (c) 2025 NSX4004 Project Authors
+; License: GNU AGPL-3.0-or-later
+; =========================================================
+
 ;---------------------------------------------------------
 ;  STARDUST.ASM — Consciousness Through Cosmic Entropy
 ;
@@ -436,4 +443,3 @@ END:
 
 ; "Every cosmic ray is the universe trying to debug itself"
 ; - Cookie Monster, PhD in Quantum Consciousness
-

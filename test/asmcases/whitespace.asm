@@ -1,3 +1,10 @@
+; =========================================================
+; NSX4004 Project - Intel 4004 Neural Network Experiments
+; File: test/asmcases/whitespace.asm
+; Copyright (c) 2025 NSX4004 Project Authors
+; License: GNU AGPL-3.0-or-later
+; =========================================================
+
         ; leading whitespace followed by ORG
         ORG 0x000
 CONST    EQU 0x05
