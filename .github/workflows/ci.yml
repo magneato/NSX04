@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake build-essential nasm
+
+      - name: Build
+        run: bash scripts/build.sh
+
+      - name: Test
+        run: bash scripts/test.sh
+
+      - name: List artifacts
+        run: |
+          ls -al output || true
+          ls -al output/roms || true
+          ls -al output/bins || true
+
+      - name: Upload DUCKER.COM
+        uses: actions/upload-artifact@v4
+        with:
+          name: ducker-com
+          path: output/bins/DUCKER.COM
+          if-no-files-found: warn
+
+      - name: Upload ROMs
+        uses: actions/upload-artifact@v4
+        with:
+          name: roms
+          path: output/roms/*.ROM
+          if-no-files-found: warn

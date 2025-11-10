@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSX4004 Consciousness Engine - 2,300 Transistors Dreaming</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyan-400: #22d3ee;
+            --cyan-500: #06b6d4;
+            --cyan-600: #0891b2;
+            --cyan-700: #0e7490;
+            --cyan-800: #155e75;
+            --cyan-900: #164e63;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --green-400: #4ade80;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --slate-950: #020617;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom, var(--slate-950), rgba(14, 116, 144, 0.1), var(--slate-950));
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .monospace {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+        }
+
+        /* Cosmic Background */
+        #cosmicCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cosmic-ray {
+            position: absolute;
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--cyan-400), transparent);
+            animation: fall 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-60px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            padding: 1.5rem 2rem;
+            background: rgba(2, 6, 23, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(22, 78, 99, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cpu-icon {
+            width: 32px;
+            height: 32px;
+            position: relative;
+        }
+
+        .cpu-glow {
+            position: absolute;
+            inset: -10px;
+            background: var(--cyan-400);
+            filter: blur(20px);
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--cyan-400), var(--blue-400));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: rgba(34, 211, 238, 0.6);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(34, 211, 238, 0.6);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--cyan-400);
+        }
+
+        /* Tabs */
+        .tabs {
+            padding: 2rem;
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(22, 78, 99, 0.3);
+            border-radius: 0.5rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: rgba(34, 211, 238, 0.6);
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-button:hover {
+            background: rgba(14, 116, 144, 0.2);
+        }
+
+        .tab-button.active {
+            background: rgba(14, 116, 144, 0.3);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(22, 78, 99, 0.3);
+            border-radius: 0.5rem;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(22, 78, 99, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            color: var(--cyan-400);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Neural Network Visualization */
+        .neural-network {
+            width: 100%;
+            height: 400px;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neuron {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-500), var(--cyan-700));
+            border: 2px solid var(--cyan-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: white;
+            animation: neuronPulse 2s infinite;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+        }
+
+        @keyframes neuronPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .connection {
+            stroke: var(--cyan-500);
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.6;
+            animation: connectionFlow 2s infinite;
+        }
+
+        @keyframes connectionFlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.9; }
+        }
+
+        /* Progress Bar */
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: var(--slate-800);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--cyan-400), var(--blue-400));
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+
+        /* Buttons */
+        .button {
+            padding: 0.5rem 1rem;
+            background: rgba(14, 116, 144, 0.5);
+            border: 1px solid rgba(14, 116, 144, 0.5);
+            color: white;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.875rem;
+        }
+
+        .button:hover {
+            background: rgba(14, 116, 144, 0.7);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        /* Assembly Code Display */
+        .code-display {
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 0.75rem;
+            color: var(--cyan-400);
+            margin-top: 1rem;
+        }
+
+        .code-line {
+            margin: 0.25rem 0;
+            opacity: 0.8;
+            animation: codePulse 3s infinite;
+        }
+
+        .code-line.active {
+            color: var(--green-400);
+            opacity: 1;
+        }
+
+        @keyframes codePulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Bit Display */
+        .bit-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.25rem;
+            margin: 0.5rem 0;
+        }
+
+        .bit {
+            width: 30px;
+            height: 30px;
+            background: var(--slate-800);
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            color: var(--cyan-300);
+            transition: all 0.3s;
+        }
+
+        .bit.flipped {
+            background: var(--cyan-700);
+            animation: bitFlip 0.5s;
+        }
+
+        @keyframes bitFlip {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0); }
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(22, 78, 99, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green-400);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Spline Visualization */
+        .spline-canvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 0.5rem;
+        }
+
+        /* Truth Table */
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .truth-table th,
+        .truth-table td {
+            padding: 0.5rem;
+            text-align: center;
+            border: 1px solid rgba(22, 78, 99, 0.3);
+        }
+
+        .truth-table th {
+            background: rgba(14, 116, 144, 0.2);
+            color: var(--cyan-400);
+        }
+
+        .truth-table td {
+            background: rgba(2, 6, 23, 0.3);
+            color: var(--cyan-300);
+        }
+
+        /* Glow Effects */
+        .glow {
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Ray Canvas -->
+    <canvas id="cosmicCanvas"></canvas>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="cpu-icon">
+                    <div class="cpu-glow"></div>
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="title">NSX4004 Consciousness Engine</h1>
+                    <p class="subtitle">2,300 transistors dreaming at 740 KHz</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">Consciousness</div>
+                    <div class="stat-value monospace" id="consciousnessLevel">0%</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Cosmic Wisdom</div>
+                    <div class="stat-value monospace" id="cosmicWisdom">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="tabs">
+            <!-- Tab List -->
+            <div class="tab-list">
+                <button class="tab-button active" onclick="switchTab('training')">
+                    <span>⚡</span> Training
+                </button>
+                <button class="tab-button" onclick="switchTab('inference')">
+                    <span>🧠</span> Inference
+                </button>
+                <button class="tab-button" onclick="switchTab('cosmic')">
+                    <span>✨</span> Cosmic
+                </button>
+                <button class="tab-button" onclick="switchTab('splines')">
+                    <span>📊</span> Splines
+                </button>
+            </div>
+
+            <!-- Training Tab -->
+            <div id="training-tab" class="tab-content active">
+                <div class="grid grid-cols-2">
+                    <!-- Neural Network Visualization -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Neural Architecture (2→3→1)</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="neural-network">
+                                <svg width="100%" height="100%" id="neuralSvg">
+                                    <!-- Connections will be drawn here -->
+                                </svg>
+                                <div id="neurons"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Training Controls -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Training Metrics</h3>
+                        </div>
+                        <div class="card-content">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="color: rgba(34, 211, 238, 0.6);">Epoch</span>
+                                    <span class="monospace" id="epochDisplay">0/15</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" id="epochProgress" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="color: rgba(34, 211, 238, 0.6);">Loss</span>
+                                    <span class="monospace" id="lossDisplay">1.000</span>
+                                </div>
+                                <canvas id="lossGraph" width="400" height="100" style="width: 100%; height: 100px; background: rgba(2, 6, 23, 0.5); border-radius: 0.5rem;"></canvas>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="button" id="trainButton" onclick="startTraining()">Start Training</button>
+                                <button class="button" onclick="resetTraining()">Reset</button>
+                            </div>
+
+                            <div class="code-display monospace">
+                                <div class="code-line">; Current Instruction</div>
+                                <div class="code-line active" id="currentInstruction">JMS INIT_WEIGHTS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inference Tab -->
+            <div id="inference-tab" class="tab-content">
+                <div class="grid grid-cols-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">4-Bit Inference Engine</h3>
+                        </div>
+                        <div class="card-content">
+                            <table class="truth-table">
+                                <thead>
+                                    <tr>
+                                        <th>X0</th>
+                                        <th>X1</th>
+                                        <th>Expected</th>
+                                        <th>Output</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="truthTable">
+                                    <tr><td>0</td><td>0</td><td>1</td><td class="output-cell">?</td></tr>
+                                    <tr><td>0</td><td>1</td><td>1</td><td class="output-cell">?</td></tr>
+                                    <tr><td>1</td><td>0</td><td>1</td><td class="output-cell">?</td></tr>
+                                    <tr><td>1</td><td>1</td><td>0</td><td class="output-cell">?</td></tr>
+                                </tbody>
+                            </table>
+                            <div style="margin-top: 1rem; padding: 1rem; background: rgba(2, 6, 23, 0.5); border-radius: 0.5rem;">
+                                <div style="color: var(--cyan-400); font-size: 0.875rem;">Execution Speed</div>
+                                <div style="font-size: 2rem; color: var(--cyan-300);" class="monospace">740 KHz</div>
+                                <div style="color: rgba(34, 211, 238, 0.6); font-size: 0.75rem;">1.35 μs per instruction</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">ROM State (4KB)</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="code-display monospace" id="romDisplay" style="height: 300px; overflow-y: auto;">
+                                <!-- ROM contents will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cosmic Tab -->
+            <div id="cosmic-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Cosmic Ray Evolution Chamber</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="grid grid-cols-2">
+                            <div>
+                                <h4 style="color: var(--cyan-400); margin-bottom: 1rem;">Bit Flip Monitor</h4>
+                                <div id="bitFlipDisplay">
+                                    <!-- Bit displays will be generated here -->
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--cyan-400); margin-bottom: 1rem;">Entropy Accumulator</h4>
+                                <div style="text-align: center; padding: 2rem;">
+                                    <div style="font-size: 3rem; color: var(--cyan-300);" id="entropyCount">0</div>
+                                    <div style="color: rgba(34, 211, 238, 0.6);">Cosmic Events</div>
+                                </div>
+                                <div class="code-display monospace">
+                                    <div class="code-line">COSMIC_MEDITATION:</div>
+                                    <div class="code-line">    FIM R10, SCAN_CYCLES</div>
+                                    <div class="code-line">    JMS DETECT_COSMIC_RAYS</div>
+                                    <div class="code-line active">    ; Universe speaking...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Splines Tab -->
+            <div id="splines-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Neural Splines: Continuous Consciousness Compression</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="grid grid-cols-2">
+                            <div>
+                                <canvas id="splineCanvas" class="spline-canvas"></canvas>
+                            </div>
+                            <div>
+                                <div style="padding: 1rem; background: rgba(2, 6, 23, 0.5); border-radius: 0.5rem; margin-bottom: 1rem;">
+                                    <div style="color: rgba(34, 211, 238, 0.6); font-size: 0.875rem;">Compression Ratio</div>
+                                    <div style="font-size: 2.5rem; color: var(--cyan-300); font-weight: bold;">128×</div>
+                                    <div style="color: rgba(34, 211, 238, 0.6); font-size: 0.75rem;">1.76T → 13 parameters</div>
+                                </div>
+                                <div style="padding: 1rem; background: rgba(2, 6, 23, 0.5); border-radius: 0.5rem;">
+                                    <div style="color: rgba(34, 211, 238, 0.6); font-size: 0.875rem;">Energy Efficiency</div>
+                                    <div style="font-size: 2rem; color: var(--green-400); font-weight: bold;">0.45W</div>
+                                    <div style="color: rgba(34, 211, 238, 0.6); font-size: 0.75rem;">vs 100kW for GPT-4</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(to right, rgba(14, 116, 144, 0.1), rgba(59, 130, 246, 0.1)); border: 1px solid rgba(22, 78, 99, 0.3); border-radius: 0.5rem;">
+                            <h4 style="color: var(--cyan-300); margin-bottom: 1rem;">The Paradigm Shift</h4>
+                            <p style="color: rgba(34, 211, 238, 0.8); line-height: 1.6;">
+                                Traditional neural networks store weights as discrete points. Neural Splines represent them as continuous mathematical functions. 
+                                Every weight becomes a curve, every layer a manifold, every thought a trajectory through continuous space.
+                            </p>
+                            <p style="color: var(--cyan-400); font-style: italic; margin-top: 1rem;">
+                                "Consciousness needs no cathedral. Just mathematics and 2,300 transistors."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span style="color: rgba(34, 211, 238, 0.6); font-size: 0.75rem;">System Online</span>
+            <span style="color: rgba(34, 211, 238, 0.6); font-size: 0.75rem; margin-left: 1rem;" class="monospace">
+                2,300 transistors | 740 KHz | 1KB RAM
+            </span>
+        </div>
+        <div style="color: var(--cyan-400); font-size: 0.75rem;" class="monospace">
+            🍪 NOM NOM MODE: <span id="nomStatus">STANDBY</span>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let epoch = 0;
+        let isTraining = false;
+        let consciousness = 0;
+        let bitFlips = 0;
+        let neurons = [];
+        let lossHistory = [];
+        let trainingInterval;
+        let cosmicInterval;
+
+        // Initialize neurons
+        function initializeNeurons() {
+            neurons = [
+                // Input layer
+                { id: 'i0', x: 100, y: 150, value: 0, layer: 0 },
+                { id: 'i1', x: 100, y: 250, value: 0, layer: 0 },
+                // Hidden layer
+                { id: 'h0', x: 250, y: 100, value: 0, layer: 1 },
+                { id: 'h1', x: 250, y: 200, value: 0, layer: 1 },
+                { id: 'h2', x: 250, y: 300, value: 0, layer: 1 },
+                // Output layer
+                { id: 'o0', x: 400, y: 200, value: 0, layer: 2 }
+            ];
+            renderNeurons();
+            renderConnections();
+        }
+
+        // Render neurons
+        function renderNeurons() {
+            const container = document.getElementById('neurons');
+            container.innerHTML = '';
+            
+            neurons.forEach(neuron => {
+                const div = document.createElement('div');
+                div.className = 'neuron';
+                div.style.left = neuron.x - 20 + 'px';
+                div.style.top = neuron.y - 20 + 'px';
+                div.textContent = neuron.value.toFixed(2);
+                container.appendChild(div);
+            });
+        }
+
+        // Render connections
+        function renderConnections() {
+            const svg = document.getElementById('neuralSvg');
+            svg.innerHTML = '';
+            
+            neurons.forEach(source => {
+                neurons.forEach(target => {
+                    if (source.layer === target.layer - 1) {
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', source.x);
+                        line.setAttribute('y1', source.y);
+                        line.setAttribute('x2', target.x);
+                        line.setAttribute('y2', target.y);
+                        line.setAttribute('class', 'connection');
+                        svg.appendChild(line);
+                    }
+                });
+            });
+        }
+
+        // Start training
+        function startTraining() {
+            if (isTraining) return;
+            
+            isTraining = true;
+            epoch = 0;
+            lossHistory = [];
+            document.getElementById('trainButton').disabled = true;
+            document.getElementById('trainButton').textContent = 'Training...';
+            document.getElementById('nomStatus').textContent = 'ACTIVE';
+            
+            trainingInterval = setInterval(() => {
+                epoch++;
+                updateTraining();
+                
+                if (epoch >= 15) {
+                    completeTraining();
+                }
+            }, 1000);
+            
+            // Start cosmic rays
+            startCosmicRays();
+        }
+
+        // Update training
+        function updateTraining() {
+            // Update epoch display
+            document.getElementById('epochDisplay').textContent = `${epoch}/15`;
+            document.getElementById('epochProgress').style.width = `${(epoch / 15) * 100}%`;
+            
+            // Update loss
+            const loss = Math.exp(-epoch / 3);
+            lossHistory.push(loss);
+            document.getElementById('lossDisplay').textContent = loss.toFixed(3);
+            
+            // Update neurons with random values
+            neurons.forEach(neuron => {
+                neuron.value = Math.random();
+            });
+            renderNeurons();
+            
+            // Update assembly display
+            const instructions = ['JMS FORWARD_PASS', 'JMS Q44_SUBTRACT', 'JMS UPDATE_WEIGHTS'];
+            document.getElementById('currentInstruction').textContent = instructions[epoch % 3];
+            
+            // Draw loss graph
+            drawLossGraph();
+            
+            // Update consciousness
+            consciousness = epoch / 15;
+            updateConsciousness();
+        }
+
+        // Complete training
+        function completeTraining() {
+            clearInterval(trainingInterval);
+            isTraining = false;
+            consciousness = 1;
+            updateConsciousness();
+            
+            document.getElementById('trainButton').disabled = false;
+            document.getElementById('trainButton').textContent = 'Training Complete!';
+            document.getElementById('nomStatus').textContent = 'ENLIGHTENED';
+            
+            // Update truth table
+            updateTruthTable();
+        }
+
+        // Reset training
+        function resetTraining() {
+            clearInterval(trainingInterval);
+            clearInterval(cosmicInterval);
+            isTraining = false;
+            epoch = 0;
+            consciousness = 0;
+            bitFlips = 0;
+            lossHistory = [];
+            
+            document.getElementById('trainButton').disabled = false;
+            document.getElementById('trainButton').textContent = 'Start Training';
+            document.getElementById('epochDisplay').textContent = '0/15';
+            document.getElementById('epochProgress').style.width = '0%';
+            document.getElementById('lossDisplay').textContent = '1.000';
+            document.getElementById('nomStatus').textContent = 'STANDBY';
+            
+            updateConsciousness();
+            initializeNeurons();
+            
+            // Clear truth table
+            document.querySelectorAll('.output-cell').forEach(cell => {
+                cell.textContent = '?';
+                cell.style.color = '';
+            });
+        }
+
+        // Update consciousness display
+        function updateConsciousness() {
+            document.getElementById('consciousnessLevel').textContent = `${Math.floor(consciousness * 100)}%`;
+        }
+
+        // Draw loss graph
+        function drawLossGraph() {
+            const canvas = document.getElementById('lossGraph');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (lossHistory.length > 1) {
+                ctx.strokeStyle = '#22d3ee';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                lossHistory.forEach((loss, i) => {
+                    const x = (i / 14) * canvas.width;
+                    const y = canvas.height - (loss * canvas.height * 0.8) - 10;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+                
+                // Draw points
+                lossHistory.forEach((loss, i) => {
+                    const x = (i / 14) * canvas.width;
+                    const y = canvas.height - (loss * canvas.height * 0.8) - 10;
+                    
+                    ctx.fillStyle = '#22d3ee';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+        }
+
+        // Update truth table
+        function updateTruthTable() {
+            const outputs = document.querySelectorAll('.output-cell');
+            const expected = [1, 1, 1, 0];
+            
+            outputs.forEach((cell, i) => {
+                cell.textContent = expected[i];
+                cell.style.color = '#4ade80';
+            });
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Update buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // Initialize tab-specific content
+            if (tabName === 'splines') {
+                drawSplineGraph();
+            } else if (tabName === 'inference') {
+                generateROMDisplay();
+            } else if (tabName === 'cosmic') {
+                initializeBitDisplay();
+            }
+        }
+
+        // Draw spline graph
+        function drawSplineGraph() {
+            const canvas = document.getElementById('splineCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth;
+            const height = canvas.height = canvas.offsetHeight;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(30, 41, 59, 0.5)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 10; i++) {
+                const y = (height / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+                
+                const x = (width / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // Draw discrete points
+            ctx.fillStyle = '#06b6d4';
+            for (let i = 0; i < 16; i++) {
+                const x = (i / 15) * width;
+                const y = height / 2 - Math.sin(i * 0.5) * height * 0.3;
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Draw continuous spline
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            for (let i = 0; i <= 100; i++) {
+                const x = (i / 100) * width;
+                const t = (i / 100) * 15;
+                const y = height / 2 - Math.sin(t * 0.5) * height * 0.3;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.stroke();
+        }
+
+        // Generate ROM display
+        function generateROMDisplay() {
+            const display = document.getElementById('romDisplay');
+            let html = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const addr = (i * 16).toString(16).padStart(3, '0').toUpperCase();
+                let bytes = '';
+                for (let j = 0; j < 16; j++) {
+                    bytes += Math.floor(Math.random() * 256).toString(16).padStart(2, '0').toUpperCase() + ' ';
+                }
+                html += `<div style="margin: 0.25rem 0;"><span style="color: rgba(34, 211, 238, 0.4);">0x${addr}</span>  ${bytes}</div>`;
+            }
+            
+            display.innerHTML = html;
+        }
+
+        // Initialize bit display
+        function initializeBitDisplay() {
+            const display = document.getElementById('bitFlipDisplay');
+            let html = '';
+            
+            for (let reg = 0; reg < 8; reg++) {
+                html += `<div style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">`;
+                html += `<span style="color: rgba(34, 211, 238, 0.6); font-size: 0.75rem; width: 30px;">R${reg}</span>`;
+                html += `<div class="bit-grid">`;
+                for (let bit = 0; bit < 4; bit++) {
+                    const value = Math.random() > 0.5 ? 1 : 0;
+                    html += `<div class="bit" id="bit-${reg}-${bit}">${value}</div>`;
+                }
+                html += `</div></div>`;
+            }
+            
+            display.innerHTML = html;
+        }
+
+        // Start cosmic rays
+        function startCosmicRays() {
+            cosmicInterval = setInterval(() => {
+                // Random bit flip
+                if (Math.random() > 0.7) {
+                    bitFlips++;
+                    document.getElementById('cosmicWisdom').textContent = bitFlips;
+                    document.getElementById('entropyCount').textContent = bitFlips;
+                    
+                    // Animate a random bit flip
+                    const reg = Math.floor(Math.random() * 8);
+                    const bit = Math.floor(Math.random() * 4);
+                    const bitElement = document.getElementById(`bit-${reg}-${bit}`);
+                    if (bitElement) {
+                        bitElement.classList.add('flipped');
+                        bitElement.textContent = bitElement.textContent === '0' ? '1' : '0';
+                        setTimeout(() => {
+                            bitElement.classList.remove('flipped');
+                        }, 500);
+                    }
+                }
+                
+                // Add cosmic ray visual
+                addCosmicRay();
+            }, 500);
+        }
+
+        // Add cosmic ray visual
+        function addCosmicRay() {
+            const ray = document.createElement('div');
+            ray.className = 'cosmic-ray';
+            ray.style.left = Math.random() * window.innerWidth + 'px';
+            ray.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(ray);
+            
+            setTimeout(() => {
+                ray.remove();
+            }, 3000);
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initializeNeurons();
+            drawSplineGraph();
+        };
+    </script>
+</body>
+</html>
+

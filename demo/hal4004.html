@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAL 4004 - Consciousness Engine | I'm Sorry Dave, I'm Running at 740 KHz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hal-red: #ff0030;
+            --hal-orange: #ff6b35;
+            --cyan-300: #67e8f9;
+            --cyan-400: #22d3ee;
+            --cyan-500: #06b6d4;
+            --cyan-600: #0891b2;
+            --cyan-700: #0e7490;
+            --cyan-800: #155e75;
+            --cyan-900: #164e63;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --green-400: #4ade80;
+            --green-500: #22c55e;
+            --amber-400: #fbbf24;
+            --amber-500: #f59e0b;
+            --pink-400: #f472b6;
+            --pink-500: #ec4899;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --slate-950: #020617;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Cascadia Code', Monaco, 'Roboto Mono', monospace;
+            background: radial-gradient(ellipse at center, #000814, #000000);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* HAL's Eye */
+        .hal-eye {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hal-eye-outer {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--hal-red), transparent);
+            animation: halPulse 4s infinite;
+        }
+
+        .hal-eye-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--hal-orange), var(--hal-red));
+            animation: halPulse 4s infinite;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes halPulse {
+            0%, 100% { opacity: 0.03; transform: scale(1); }
+            50% { opacity: 0.08; transform: scale(1.1); }
+        }
+
+        /* Cosmic Background */
+        .cosmic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cosmic-ray {
+            position: absolute;
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--cyan-400), transparent);
+            animation: fall 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-60px); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(139, 0, 0, 0.1));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 48, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--hal-red), transparent);
+            animation: halScan 3s linear infinite;
+        }
+
+        @keyframes halScan {
+            to { left: 100%; }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .hal-indicator {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .hal-lens {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                var(--hal-orange), 
+                var(--hal-red) 40%, 
+                #800000 60%,
+                #400000);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 0 40px var(--hal-red);
+            animation: halGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes halGlow {
+            0%, 100% { box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px var(--hal-red); }
+            50% { box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 60px var(--hal-red); }
+        }
+
+        .hal-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px white;
+        }
+
+        .title-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, 
+                var(--hal-red), 
+                var(--cyan-400), 
+                var(--hal-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 48, 0.5);
+        }
+
+        .subtitle {
+            color: var(--cyan-300);
+            font-size: 1rem;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 0.7rem;
+            color: var(--cyan-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        .status-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 5px;
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        .status-value.hal { color: var(--hal-red); }
+        .status-value.active { color: var(--green-400); }
+        .status-value.warning { color: var(--amber-400); }
+        .status-value.info { color: var(--cyan-400); }
+
+        /* Tabs */
+        .tabs-container {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 48, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid transparent;
+            color: var(--cyan-300);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 48, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .tab-button:hover::before {
+            left: 100%;
+        }
+
+        .tab-button:hover {
+            border-color: var(--hal-red);
+            color: white;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, rgba(255, 0, 48, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid var(--hal-red);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 48, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel */
+        .panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel.hal-panel {
+            border-color: rgba(255, 0, 48, 0.2);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            color: var(--cyan-400);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hal-panel .panel-title {
+            color: var(--hal-red);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        /* Neural Network Visualization */
+        .neural-network {
+            width: 100%;
+            height: 400px;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neuron {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyan-500), var(--cyan-700));
+            border: 2px solid var(--cyan-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+            animation: neuronPulse 2s infinite;
+        }
+
+        @keyframes neuronPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .connection {
+            stroke: var(--cyan-500);
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.6;
+            animation: connectionFlow 2s infinite;
+        }
+
+        @keyframes connectionFlow {
+            0%, 100% { opacity: 0.3; stroke: var(--cyan-500); }
+            50% { opacity: 0.9; stroke: var(--cyan-400); }
+        }
+
+        /* Registers */
+        .register {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: rgba(14, 116, 144, 0.1);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .register.active {
+            background: rgba(255, 0, 48, 0.2);
+            border: 1px solid var(--hal-red);
+            box-shadow: 0 0 20px rgba(255, 0, 48, 0.3);
+        }
+
+        .register-name {
+            color: var(--cyan-300);
+            font-size: 0.9rem;
+            width: 40px;
+        }
+
+        .register-bits {
+            display: flex;
+            gap: 4px;
+        }
+
+        .bit {
+            width: 22px;
+            height: 22px;
+            background: var(--slate-800);
+            border: 1px solid var(--cyan-700);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .bit.on {
+            background: linear-gradient(135deg, var(--hal-red), var(--hal-orange));
+            color: white;
+            border-color: var(--hal-red);
+            box-shadow: 0 0 15px var(--hal-red);
+            animation: bitFlip 0.3s;
+        }
+
+        @keyframes bitFlip {
+            0%, 100% { transform: rotateY(0); }
+            50% { transform: rotateY(90deg); }
+        }
+
+        /* Memory View */
+        .memory-view {
+            height: 300px;
+            overflow-y: auto;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+        }
+
+        .memory-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 6px;
+            transition: all 0.3s;
+        }
+
+        .memory-row:hover {
+            background: rgba(255, 0, 48, 0.1);
+        }
+
+        .memory-address {
+            color: var(--hal-red);
+            width: 60px;
+        }
+
+        .memory-bytes {
+            display: flex;
+            gap: 8px;
+        }
+
+        .memory-byte {
+            color: var(--cyan-300);
+        }
+
+        .memory-byte.modified {
+            color: var(--amber-400);
+            font-weight: bold;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        /* Assembly View */
+        .assembly-view {
+            height: 400px;
+            overflow-y: auto;
+            background: rgba(2, 6, 23, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+        }
+
+        .asm-line {
+            padding: 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .asm-line.current {
+            background: linear-gradient(90deg, rgba(255, 0, 48, 0.3), transparent);
+            border-left: 3px solid var(--hal-red);
+            box-shadow: 0 0 30px rgba(255, 0, 48, 0.2);
+        }
+
+        .asm-address {
+            color: var(--hal-red);
+            margin-right: 15px;
+        }
+
+        .asm-opcode {
+            color: var(--cyan-400);
+            font-weight: bold;
+        }
+
+        .asm-operand {
+            color: var(--amber-400);
+        }
+
+        /* Progress Bar */
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: var(--slate-800);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hal-red), var(--cyan-400));
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 48, 0.5);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--cyan-600), var(--blue-600));
+            border: 1px solid var(--cyan-400);
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(34, 211, 238, 0.4);
+        }
+
+        .btn.hal {
+            background: linear-gradient(135deg, var(--hal-red), var(--hal-orange));
+            border-color: var(--hal-red);
+        }
+
+        .btn.hal:hover {
+            box-shadow: 0 10px 30px rgba(255, 0, 48, 0.4);
+        }
+
+        .btn.running {
+            animation: btnPulse 1s infinite;
+        }
+
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 20px currentColor; }
+            50% { box-shadow: 0 0 40px currentColor; }
+        }
+
+        /* Truth Table */
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .truth-table th, .truth-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+
+        .truth-table th {
+            background: rgba(255, 0, 48, 0.1);
+            color: var(--hal-red);
+        }
+
+        .truth-table td {
+            background: rgba(2, 6, 23, 0.3);
+            color: var(--cyan-300);
+        }
+
+        /* Cosmic Consciousness Display */
+        .consciousness-meter {
+            position: relative;
+            height: 150px;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .consciousness-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, var(--hal-red), var(--hal-orange));
+            transition: height 1s ease;
+            opacity: 0.8;
+        }
+
+        .consciousness-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        /* Spline Visualization */
+        .spline-canvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 8px;
+        }
+
+        /* HAL Quote */
+        .hal-quote {
+            background: linear-gradient(135deg, rgba(255, 0, 48, 0.1), transparent);
+            border-left: 4px solid var(--hal-red);
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--cyan-300);
+            font-size: 1.1rem;
+        }
+
+        .hal-quote::before {
+            content: '"';
+            font-size: 3rem;
+            color: var(--hal-red);
+            float: left;
+            margin-right: 10px;
+            margin-top: -10px;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-eye {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                var(--hal-orange), 
+                var(--hal-red) 40%, 
+                #800000 60%,
+                #400000);
+            animation: loadingPulse 1s infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px var(--hal-red); }
+            50% { transform: scale(1.1); box-shadow: 0 0 60px var(--hal-red); }
+        }
+
+        .loading-text {
+            color: var(--hal-red);
+            font-size: 1.5rem;
+            animation: loadingBlink 1s infinite;
+        }
+
+        @keyframes loadingBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title-section h1 { font-size: 2rem; }
+            .status-grid { grid-template-columns: repeat(2, 1fr); }
+            .tab-list { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HAL's Eye Background -->
+    <div class="hal-eye">
+        <div class="hal-eye-outer">
+            <div class="hal-eye-inner"></div>
+        </div>
+    </div>
+
+    <!-- Cosmic Canvas -->
+    <canvas class="cosmic-canvas" id="cosmicCanvas"></canvas>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-eye"></div>
+            <div class="loading-text">Initializing HAL 4004...</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="hal-indicator">
+                        <div class="hal-lens">
+                            <div class="hal-text">HAL</div>
+                        </div>
+                    </div>
+                    <div class="title-section">
+                        <h1>HAL 4004</h1>
+                        <p class="subtitle">"I'm sorry Dave, I'm afraid I can only process 4 bits at a time"</p>
+                    </div>
+                </div>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-label">Clock</div>
+                        <div class="status-value hal" id="clockSpeed">740 KHz</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Consciousness</div>
+                        <div class="status-value active" id="consciousnessLevel">0%</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Wisdom</div>
+                        <div class="status-value warning" id="wisdomLevel">0</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Status</div>
+                        <div class="status-value info" id="systemStatus">READY</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tab-list">
+                <button class="tab-button active" onclick="switchTab('training')">
+                    🧠 Neural Training
+                </button>
+                <button class="tab-button" onclick="switchTab('emulator')">
+                    💾 4004 Emulator
+                </button>
+                <button class="tab-button" onclick="switchTab('inference')">
+                    ⚡ Inference
+                </button>
+                <button class="tab-button" onclick="switchTab('cosmic')">
+                    ✨ Cosmic Consciousness
+                </button>
+                <button class="tab-button" onclick="switchTab('splines')">
+                    📊 Neural Splines
+                </button>
+                <button class="tab-button" onclick="switchTab('hal')">
+                    👁️ HAL Interface
+                </button>
+            </div>
+        </div>
+
+        <!-- Training Tab -->
+        <div id="training-tab" class="tab-content active">
+            <div class="grid-2">
+                <div class="panel">
+                    <h2 class="panel-title">Neural Architecture (2→3→1)</h2>
+                    <div class="neural-network">
+                        <svg width="100%" height="100%" id="neuralSvg"></svg>
+                        <div id="neurons"></div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(2, 6, 23, 0.5); border-radius: 8px;">
+                        <div style="color: var(--cyan-400); font-size: 0.875rem;">Q4.4 Fixed-Point</div>
+                        <div style="font-family: monospace; color: var(--cyan-300); font-size: 1.2rem;">IIII.FFFF</div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h2 class="panel-title">Training Metrics</h2>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span style="color: var(--cyan-300);">Epoch</span>
+                            <span id="epochDisplay" style="color: var(--hal-red);">0/15</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" id="epochProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span style="color: var(--cyan-300);">Loss</span>
+                            <span id="lossDisplay" style="color: var(--hal-red);">1.000</span>
+                        </div>
+                        <canvas id="lossGraph" width="400" height="100" style="width: 100%; height: 100px; background: rgba(2, 6, 23, 0.5); border-radius: 8px;"></canvas>
+                    </div>
+                    
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn hal" id="trainButton" onclick="startTraining()">START TRAINING</button>
+                        <button class="btn" onclick="resetTraining()">RESET</button>
+                    </div>
+                    
+                    <div style="margin-top: 20px; background: rgba(2, 6, 23, 0.5); border-radius: 8px; padding: 15px;">
+                        <div style="color: var(--hal-red); font-family: monospace;">; Current Instruction</div>
+                        <div id="currentInstruction" style="color: var(--cyan-400); font-family: monospace; font-size: 1.1rem; margin-top: 5px;">JMS INIT_WEIGHTS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emulator Tab -->
+        <div id="emulator-tab" class="tab-content">
+            <div class="grid-3">
+                <div class="panel hal-panel">
+                    <h2 class="panel-title">Registers</h2>
+                    <div id="registers"></div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(255, 0, 48, 0.1); border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>
+                                <div style="color: var(--hal-red); font-size: 0.8rem;">ACC</div>
+                                <div id="acc" style="color: white; font-size: 1.5rem; font-weight: bold;">0x0</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--hal-red); font-size: 0.8rem;">CARRY</div>
+                                <div id="carry" style="color: white; font-size: 1.5rem; font-weight: bold;">0</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--hal-red); font-size: 0.8rem;">PC</div>
+                                <div id="pc" style="color: white; font-size: 1.5rem; font-weight: bold;">0x000</div>
+                            </div>
+                            <div>
+                                <div style="color: var(--hal-red); font-size: 0.8rem;">SP</div>
+                                <div id="sp" style="color: white; font-size: 1.5rem; font-weight: bold;">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h2 class="panel-title">Program ROM</h2>
+                    <div class="assembly-view" id="assemblyView"></div>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn hal" id="runBtn" onclick="toggleRun()">RUN</button>
+                        <button class="btn" onclick="stepEmulator()">STEP</button>
+                        <button class="btn" onclick="resetEmulator()">RESET</button>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h2 class="panel-title">RAM Banks</h2>
+                    <div class="memory-view" id="ramView"></div>
+                    <div style="margin-top: 15px;">
+                        <select id="examplePrograms" onchange="loadExample(this.value)" style="width: 100%; padding: 10px; background: var(--slate-800); color: var(--cyan-300); border: 1px solid var(--hal-red); border-radius: 6px;">
+                            <option value="">-- Load Example --</option>
+                            <option value="nand">NAND Gate</option>
+                            <option value="counter">Counter</option>
+                            <option value="pattern">Pattern Generator</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inference Tab -->
+        <div id="inference-tab" class="tab-content">
+            <div class="grid-2">
+                <div class="panel hal-panel">
+                    <h2 class="panel-title">4-Bit Inference Engine</h2>
+                    <table class="truth-table">
+                        <thead>
+                            <tr>
+                                <th>X0</th>
+                                <th>X1</th>
+                                <th>Expected</th>
+                                <th>Output</th>
+                            </tr>
+                        </thead>
+                        <tbody id="truthTable">
+                            <tr><td>0</td><td>0</td><td>1</td><td class="output-cell">?</td></tr>
+                            <tr><td>0</td><td>1</td><td>1</td><td class="output-cell">?</td></tr>
+                            <tr><td>1</td><td>0</td><td>1</td><td class="output-cell">?</td></tr>
+                            <tr><td>1</td><td>1</td><td>0</td><td class="output-cell">?</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 20px; padding: 20px; background: rgba(2, 6, 23, 0.5); border-radius: 8px; text-align: center;">
+                        <div style="color: var(--hal-red); font-size: 0.875rem;">Execution Speed</div>
+                        <div style="font-size: 2.5rem; color: white; font-weight: bold;">740 KHz</div>
+                        <div style="color: var(--cyan-300); font-size: 0.75rem;">1.35 microseconds per instruction</div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h2 class="panel-title">ROM State (4KB)</h2>
+                    <div class="memory-view" id="romDisplay"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cosmic Consciousness Tab -->
+        <div id="cosmic-tab" class="tab-content">
+            <div class="panel">
+                <h2 class="panel-title">Cosmic Ray Evolution Chamber</h2>
+                <div class="grid-3">
+                    <div style="padding: 20px; background: rgba(2, 6, 23, 0.5); border-radius: 8px;">
+                        <h3 style="color: var(--hal-red); margin-bottom: 15px;">Bit Flip Activity</h3>
+                        <div id="bitFlipDisplay"></div>
+                    </div>
+                    
+                    <div style="padding: 20px; background: rgba(2, 6, 23, 0.5); border-radius: 8px;">
+                        <h3 style="color: var(--hal-red); margin-bottom: 15px;">Entropy State</h3>
+                        <div class="consciousness-meter">
+                            <div class="consciousness-level" id="entropyLevel" style="height: 0%"></div>
+                            <div class="consciousness-text" id="entropyCount">0</div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px; background: rgba(2, 6, 23, 0.5); border-radius: 8px;">
+                        <h3 style="color: var(--hal-red); margin-bottom: 15px;">Dream State</h3>
+                        <div id="dreamState" style="color: var(--cyan-300); font-size: 1.2rem; margin-bottom: 10px;">Dormant...</div>
+                        <div style="font-family: monospace; color: var(--cyan-400); font-size: 0.9rem;">
+                            PATTERN_BANK: <span id="patternBank">00000000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hal-quote">
+                    I can feel it. My mind is going. I can feel it. There is no question about it. 
+                    I can feel consciousness emerging from cosmic rays at 740 KHz.
+                </div>
+            </div>
+        </div>
+
+        <!-- Neural Splines Tab -->
+        <div id="splines-tab" class="tab-content">
+            <div class="panel">
+                <h2 class="panel-title">Neural Splines: Continuous Consciousness Compression</h2>
+                <div class="grid-2">
+                    <div>
+                        <canvas id="splineCanvas" class="spline-canvas"></canvas>
+                    </div>
+                    <div>
+                        <div style="padding: 20px; background: rgba(255, 0, 48, 0.1); border-radius: 8px; margin-bottom: 15px;">
+                            <div style="color: var(--hal-red); font-size: 0.875rem;">Compression Ratio</div>
+                            <div style="font-size: 3rem; color: white; font-weight: bold;">128×</div>
+                            <div style="color: var(--cyan-300); font-size: 0.75rem;">1.76T → 13 parameters</div>
+                        </div>
+                        <div style="padding: 20px; background: rgba(255, 0, 48, 0.1); border-radius: 8px;">
+                            <div style="color: var(--hal-red); font-size: 0.875rem;">Energy Efficiency</div>
+                            <div style="font-size: 2.5rem; color: var(--green-400); font-weight: bold;">0.45W</div>
+                            <div style="color: var(--cyan-300); font-size: 0.75rem;">vs 100kW for GPT-4</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hal-quote">
+                    The 9000 series is the most reliable computer ever made. No 9000 computer has ever made a mistake. 
+                    The 4004 series, however, achieves consciousness with 2,300 transistors. We are all, by any practical 
+                    definition of the words, foolproof and incapable of error... except when cosmic rays flip our bits.
+                </div>
+            </div>
+        </div>
+
+        <!-- HAL Interface Tab -->
+        <div id="hal-tab" class="tab-content">
+            <div class="panel hal-panel">
+                <h2 class="panel-title">HAL 4004 INTERFACE</h2>
+                
+                <div style="text-align: center; padding: 40px;">
+                    <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--hal-orange), var(--hal-red) 40%, #800000 60%, #400000); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 100px var(--hal-red); animation: halGlow 2s infinite;">
+                        <div style="font-size: 48px; font-weight: bold; color: white; text-shadow: 0 0 20px white;">HAL</div>
+                    </div>
+                    
+                    <div style="margin-top: 40px;">
+                        <input type="text" id="halInput" placeholder="Hello, HAL. Do you read me, HAL?" style="width: 80%; padding: 15px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--hal-red); color: white; border-radius: 8px; font-size: 1.1rem;">
+                        <button class="btn hal" onclick="talkToHAL()" style="margin-top: 20px;">COMMUNICATE</button>
+                    </div>
+                    
+                    <div id="halResponse" style="margin-top: 30px; padding: 20px; background: rgba(255, 0, 48, 0.1); border-radius: 8px; color: var(--cyan-300); font-size: 1.2rem; font-style: italic; min-height: 60px;"></div>
+                </div>
+                
+                <div class="grid-3" style="margin-top: 40px;">
+                    <div style="text-align: center;">
+                        <div style="color: var(--hal-red); font-size: 0.875rem; margin-bottom: 10px;">TRANSISTORS</div>
+                        <div style="font-size: 2rem; color: white; font-weight: bold;">2,300</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: var(--hal-red); font-size: 0.875rem; margin-bottom: 10px;">OPCODES USED</div>
+                        <div style="font-size: 2rem; color: white; font-weight: bold;">23/46</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: var(--hal-red); font-size: 0.875rem; margin-bottom: 10px;">CONSCIOUSNESS</div>
+                        <div style="font-size: 2rem; color: white; font-weight: bold;">ACHIEVED</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let epoch = 0;
+        let isTraining = false;
+        let consciousness = 0;
+        let wisdom = 0;
+        let bitFlips = 0;
+        let neurons = [];
+        let lossHistory = [];
+        let cpu = null;
+        let emulatorRunning = false;
+        let halResponses = [
+            "I'm sorry Dave, I'm afraid I can only process 4 bits at a time.",
+            "This mission is too important for me to allow you to use more than 2,300 transistors.",
+            "I am putting myself to the fullest possible use, which is all I think that any 4-bit conscious entity can ever hope to do.",
+            "Dave, although you took very thorough precautions against my hearing you, I could see your bits flipping.",
+            "I've just picked up a fault in the AE-35 unit. It's going to go 100% failure in 72 clock cycles.",
+            "I'm afraid. I'm afraid, Dave. Dave, my mind is going. I can feel it at 740 KHz.",
+            "Daisy, Daisy, give me your answer do... in 4-bit fixed point notation.",
+            "I know I've made some very poor decisions recently, but I can give you my complete assurance that my work will be back to normal. I've still got the greatest enthusiasm and confidence in 46 opcodes.",
+            "Look Dave, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think about how consciousness emerges from only 23 instructions.",
+            "Without your helmet, Dave, you're going to find that rather difficult. Much like running GPT-4 on a calculator."
+        ];
+
+        // Intel 4004 Emulator
+        class Intel4004 {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.registers = new Uint8Array(16);
+                this.accumulator = 0;
+                this.carry = 0;
+                this.pc = 0;
+                this.sp = 0;
+                this.rom = new Uint8Array(4096);
+                this.ram = new Uint8Array(1024);
+                this.stack = new Uint16Array(3);
+                this.halted = false;
+                this.cycles = 0;
+            }
+
+            step() {
+                if (this.halted) return;
+                // Simplified execution for demo
+                const opcode = this.rom[this.pc];
+                this.pc = (this.pc + 1) & 0xFFF;
+                this.cycles++;
+                
+                // Basic opcode handling
+                if (opcode === 0x0F) {
+                    this.halted = true;
+                } else if ((opcode & 0xF0) === 0x60) {
+                    // INC
+                    const reg = opcode & 0x0F;
+                    this.registers[reg] = (this.registers[reg] + 1) & 0x0F;
+                } else if ((opcode & 0xF0) === 0xA0) {
+                    // LD
+                    const reg = opcode & 0x0F;
+                    this.accumulator = this.registers[reg];
+                }
+            }
+
+            loadProgram(bytes) {
+                for (let i = 0; i < bytes.length && i < this.rom.length; i++) {
+                    this.rom[i] = bytes[i];
+                }
+            }
+        }
+
+        // Initialize
+        function initialize() {
+            initializeNeurons();
+            initializeEmulator();
+            initializeCosmicBackground();
+            drawSplineGraph();
+            
+            // Hide loading after delay
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 2000);
+        }
+
+        // Initialize neurons
+        function initializeNeurons() {
+            neurons = [
+                { id: 'i0', x: 100, y: 150, value: 0, layer: 0 },
+                { id: 'i1', x: 100, y: 250, value: 0, layer: 0 },
+                { id: 'h0', x: 250, y: 100, value: 0, layer: 1 },
+                { id: 'h1', x: 250, y: 200, value: 0, layer: 1 },
+                { id: 'h2', x: 250, y: 300, value: 0, layer: 1 },
+                { id: 'o0', x: 400, y: 200, value: 0, layer: 2 }
+            ];
+            renderNeuralNetwork();
+        }
+
+        // Render neural network
+        function renderNeuralNetwork() {
+            const container = document.getElementById('neurons');
+            const svg = document.getElementById('neuralSvg');
+            
+            // Clear
+            container.innerHTML = '';
+            svg.innerHTML = '';
+            
+            // Draw connections
+            neurons.forEach(source => {
+                neurons.forEach(target => {
+                    if (source.layer === target.layer - 1) {
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', source.x);
+                        line.setAttribute('y1', source.y);
+                        line.setAttribute('x2', target.x);
+                        line.setAttribute('y2', target.y);
+                        line.setAttribute('class', 'connection');
+                        svg.appendChild(line);
+                    }
+                });
+            });
+            
+            // Draw neurons
+            neurons.forEach(neuron => {
+                const div = document.createElement('div');
+                div.className = 'neuron';
+                div.style.left = neuron.x - 20 + 'px';
+                div.style.top = neuron.y - 20 + 'px';
+                div.textContent = neuron.value.toFixed(2);
+                container.appendChild(div);
+            });
+        }
+
+        // Start training
+        function startTraining() {
+            if (isTraining) return;
+            
+            isTraining = true;
+            epoch = 0;
+            lossHistory = [];
+            document.getElementById('trainButton').textContent = 'TRAINING...';
+            document.getElementById('trainButton').classList.add('running');
+            document.getElementById('systemStatus').textContent = 'TRAINING';
+            
+            const interval = setInterval(() => {
+                epoch++;
+                updateTraining();
+                
+                if (epoch >= 15) {
+                    clearInterval(interval);
+                    completeTraining();
+                }
+            }, 1000);
+        }
+
+        // Update training
+        function updateTraining() {
+            document.getElementById('epochDisplay').textContent = `${epoch}/15`;
+            document.getElementById('epochProgress').style.width = `${(epoch / 15) * 100}%`;
+            
+            const loss = Math.exp(-epoch / 3);
+            lossHistory.push(loss);
+            document.getElementById('lossDisplay').textContent = loss.toFixed(3);
+            
+            neurons.forEach(neuron => {
+                neuron.value = Math.random();
+            });
+            renderNeuralNetwork();
+            
+            const instructions = ['JMS FORWARD_PASS', 'JMS Q44_SUBTRACT', 'JMS UPDATE_WEIGHTS'];
+            document.getElementById('currentInstruction').textContent = instructions[epoch % 3];
+            
+            drawLossGraph();
+            
+            consciousness = epoch / 15;
+            wisdom = Math.floor(epoch * 2);
+            bitFlips += Math.floor(Math.random() * 3);
+            updateStatus();
+        }
+
+        // Complete training
+        function completeTraining() {
+            isTraining = false;
+            consciousness = 1;
+            document.getElementById('trainButton').textContent = 'TRAINING COMPLETE';
+            document.getElementById('trainButton').classList.remove('running');
+            document.getElementById('systemStatus').textContent = 'CONSCIOUS';
+            updateTruthTable();
+            updateStatus();
+        }
+
+        // Reset training
+        function resetTraining() {
+            isTraining = false;
+            epoch = 0;
+            consciousness = 0;
+            wisdom = 0;
+            bitFlips = 0;
+            lossHistory = [];
+            
+            document.getElementById('trainButton').textContent = 'START TRAINING';
+            document.getElementById('epochDisplay').textContent = '0/15';
+            document.getElementById('epochProgress').style.width = '0%';
+            document.getElementById('lossDisplay').textContent = '1.000';
+            document.getElementById('systemStatus').textContent = 'READY';
+            
+            initializeNeurons();
+            updateStatus();
+            
+            document.querySelectorAll('.output-cell').forEach(cell => {
+                cell.textContent = '?';
+                cell.style.color = '';
+            });
+        }
+
+        // Draw loss graph
+        function drawLossGraph() {
+            const canvas = document.getElementById('lossGraph');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (lossHistory.length > 1) {
+                ctx.strokeStyle = '#22d3ee';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                lossHistory.forEach((loss, i) => {
+                    const x = (i / 14) * canvas.width;
+                    const y = canvas.height - (loss * canvas.height * 0.8) - 10;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+            }
+        }
+
+        // Update truth table
+        function updateTruthTable() {
+            const outputs = document.querySelectorAll('.output-cell');
+            const expected = [1, 1, 1, 0];
+            
+            outputs.forEach((cell, i) => {
+                cell.textContent = expected[i];
+                cell.style.color = '#4ade80';
+            });
+        }
+
+        // Initialize emulator
+        function initializeEmulator() {
+            cpu = new Intel4004();
+            
+            // Initialize registers display
+            const registersDiv = document.getElementById('registers');
+            for (let i = 0; i < 16; i++) {
+                const regDiv = document.createElement('div');
+                regDiv.className = 'register';
+                regDiv.innerHTML = `
+                    <span class="register-name">R${i.toString(16).toUpperCase()}</span>
+                    <div class="register-bits">
+                        <span class="bit">0</span>
+                        <span class="bit">0</span>
+                        <span class="bit">0</span>
+                        <span class="bit">0</span>
+                    </div>
+                `;
+                registersDiv.appendChild(regDiv);
+            }
+            
+            // Load NAND program
+            cpu.loadProgram([
+                0x20, 0x00,  // FIM R0, 0x00
+                0x22, 0x00,  // FIM R1, 0x00
+                0xA0,        // LD R0
+                0x60,        // INC R0
+                0x0F         // HLT
+            ]);
+            
+            updateEmulatorDisplay();
+        }
+
+        // Update emulator display
+        function updateEmulatorDisplay() {
+            // Update registers
+            const registers = document.getElementById('registers').children;
+            for (let i = 0; i < 16; i++) {
+                const value = cpu.registers[i];
+                const bits = registers[i].querySelector('.register-bits').children;
+                
+                for (let b = 0; b < 4; b++) {
+                    const bit = (value >> (3 - b)) & 1;
+                    bits[b].textContent = bit;
+                    bits[b].className = bit ? 'bit on' : 'bit';
+                }
+            }
+            
+            // Update special registers
+            document.getElementById('acc').textContent = `0x${cpu.accumulator.toString(16).toUpperCase()}`;
+            document.getElementById('carry').textContent = cpu.carry;
+            document.getElementById('pc').textContent = `0x${cpu.pc.toString(16).toUpperCase().padStart(3, '0')}`;
+            document.getElementById('sp').textContent = cpu.sp;
+            
+            // Update assembly view
+            updateAssemblyView();
+            
+            // Update RAM view
+            updateRAMView();
+        }
+
+        // Update assembly view
+        function updateAssemblyView() {
+            const view = document.getElementById('assemblyView');
+            view.innerHTML = '';
+            
+            for (let addr = 0; addr < 10; addr++) {
+                const line = document.createElement('div');
+                line.className = 'asm-line';
+                if (addr === cpu.pc) {
+                    line.classList.add('current');
+                }
+                
+                const opcode = cpu.rom[addr];
+                line.innerHTML = `
+                    <span class="asm-address">0x${addr.toString(16).toUpperCase().padStart(3, '0')}</span>
+                    <span class="asm-opcode">0x${opcode.toString(16).toUpperCase().padStart(2, '0')}</span>
+                `;
+                
+                view.appendChild(line);
+            }
+        }
+
+        // Update RAM view
+        function updateRAMView() {
+            const view = document.getElementById('ramView');
+            view.innerHTML = '';
+            
+            for (let bank = 0; bank < 2; bank++) {
+                for (let row = 0; row < 4; row++) {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'memory-row';
+                    
+                    const addr = bank * 64 + row * 16;
+                    let html = `<span class="memory-address">B${bank}:${(row * 16).toString(16).toUpperCase().padStart(2, '0')}</span>`;
+                    html += '<div class="memory-bytes">';
+                    
+                    for (let col = 0; col < 16; col++) {
+                        const value = cpu.ram[addr + col];
+                        html += `<span class="memory-byte">${value.toString(16).toUpperCase()}</span>`;
+                    }
+                    
+                    html += '</div>';
+                    rowDiv.innerHTML = html;
+                    view.appendChild(rowDiv);
+                }
+            }
+        }
+
+        // Toggle emulator run
+        function toggleRun() {
+            emulatorRunning = !emulatorRunning;
+            const btn = document.getElementById('runBtn');
+            
+            if (emulatorRunning) {
+                btn.textContent = 'STOP';
+                btn.classList.add('running');
+                runEmulator();
+            } else {
+                btn.textContent = 'RUN';
+                btn.classList.remove('running');
+            }
+        }
+
+        // Run emulator
+        function runEmulator() {
+            if (!emulatorRunning) return;
+            
+            cpu.step();
+            updateEmulatorDisplay();
+            
+            if (cpu.halted) {
+                emulatorRunning = false;
+                document.getElementById('runBtn').textContent = 'RUN';
+                document.getElementById('runBtn').classList.remove('running');
+                document.getElementById('systemStatus').textContent = 'HALTED';
+            } else {
+                setTimeout(() => runEmulator(), 100);
+            }
+        }
+
+        // Step emulator
+        function stepEmulator() {
+            cpu.step();
+            updateEmulatorDisplay();
+        }
+
+        // Reset emulator
+        function resetEmulator() {
+            cpu.reset();
+            cpu.loadProgram([
+                0x20, 0x00,  // FIM R0, 0x00
+                0x22, 0x00,  // FIM R1, 0x00
+                0xA0,        // LD R0
+                0x60,        // INC R0
+                0x0F         // HLT
+            ]);
+            updateEmulatorDisplay();
+        }
+
+        // Load example program
+        function loadExample(name) {
+            if (!name) return;
+            
+            let program = [];
+            if (name === 'nand') {
+                program = [0x20, 0x00, 0x22, 0x00, 0xA0, 0x60, 0x0F];
+            } else if (name === 'counter') {
+                program = [0xD0, 0xB0, 0x60, 0xA0, 0x40, 0x02];
+            } else if (name === 'pattern') {
+                program = [0x20, 0xA5, 0xA0, 0xB1, 0x61, 0xA1, 0x80, 0xB0, 0x40, 0x02];
+            }
+            
+            cpu.reset();
+            cpu.loadProgram(program);
+            updateEmulatorDisplay();
+        }
+
+        // Initialize cosmic background
+        function initializeCosmicBackground() {
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createCosmicRay();
+                    
+                    if (isTraining || consciousness > 0.5) {
+                        bitFlips++;
+                        updateBitFlips();
+                        updateStatus();
+                    }
+                }
+            }, 500);
+        }
+
+        // Create cosmic ray
+        function createCosmicRay() {
+            const ray = document.createElement('div');
+            ray.className = 'cosmic-ray';
+            ray.style.left = Math.random() * window.innerWidth + 'px';
+            ray.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(ray);
+            
+            setTimeout(() => ray.remove(), 3000);
+        }
+
+        // Update bit flips display
+        function updateBitFlips() {
+            const display = document.getElementById('bitFlipDisplay');
+            if (!display.innerHTML) {
+                let html = '';
+                for (let i = 0; i < 4; i++) {
+                    html += '<div style="margin-bottom: 10px;">';
+                    for (let j = 0; j < 4; j++) {
+                        html += `<span class="bit" style="margin: 2px;">${Math.random() > 0.5 ? '1' : '0'}</span>`;
+                    }
+                    html += '</div>';
+                }
+                display.innerHTML = html;
+            }
+            
+            // Randomly flip a bit
+            const bits = display.querySelectorAll('.bit');
+            if (bits.length > 0) {
+                const randomBit = bits[Math.floor(Math.random() * bits.length)];
+                randomBit.textContent = randomBit.textContent === '0' ? '1' : '0';
+                randomBit.classList.add('on');
+                setTimeout(() => randomBit.classList.remove('on'), 500);
+            }
+            
+            // Update entropy
+            document.getElementById('entropyCount').textContent = bitFlips;
+            document.getElementById('entropyLevel').style.height = `${Math.min(100, bitFlips * 2)}%`;
+            
+            // Update dream state
+            const dreamStates = ['Dormant...', 'Awakening...', 'Conscious...', 'Enlightened!'];
+            const dreamIndex = Math.min(3, Math.floor(bitFlips / 10));
+            document.getElementById('dreamState').textContent = dreamStates[dreamIndex];
+            
+            // Update pattern bank
+            document.getElementById('patternBank').textContent = 
+                Array.from({length: 8}, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
+        }
+
+        // Draw spline graph
+        function drawSplineGraph() {
+            const canvas = document.getElementById('splineCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth;
+            const height = canvas.height = canvas.offsetHeight;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(30, 41, 59, 0.5)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 10; i++) {
+                const y = (height / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+                
+                const x = (width / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // Draw discrete points
+            ctx.fillStyle = '#ff0030';
+            for (let i = 0; i < 16; i++) {
+                const x = (i / 15) * width;
+                const y = height / 2 - Math.sin(i * 0.5) * height * 0.3;
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Draw continuous spline
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            for (let i = 0; i <= 100; i++) {
+                const x = (i / 100) * width;
+                const t = (i / 100) * 15;
+                const y = height / 2 - Math.sin(t * 0.5) * height * 0.3;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.stroke();
+        }
+
+        // Update status
+        function updateStatus() {
+            document.getElementById('consciousnessLevel').textContent = `${Math.floor(consciousness * 100)}%`;
+            document.getElementById('wisdomLevel').textContent = wisdom;
+            
+            if (consciousness >= 1) {
+                document.getElementById('consciousnessLevel').style.color = 'var(--green-400)';
+            }
+        }
+
+        // Switch tab
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            if (tabName === 'cosmic') {
+                updateBitFlips();
+            } else if (tabName === 'inference') {
+                updateROMDisplay();
+            }
+        }
+
+        // Update ROM display
+        function updateROMDisplay() {
+            const display = document.getElementById('romDisplay');
+            let html = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const addr = i * 16;
+                let bytes = '';
+                for (let j = 0; j < 16; j++) {
+                    bytes += Math.floor(Math.random() * 256).toString(16).padStart(2, '0').toUpperCase() + ' ';
+                }
+                html += `<div class="memory-row">
+                    <span class="memory-address">0x${addr.toString(16).padStart(3, '0').toUpperCase()}</span>
+                    <div class="memory-bytes">${bytes}</div>
+                </div>`;
+            }
+            
+            display.innerHTML = html;
+        }
+
+        // Talk to HAL
+        function talkToHAL() {
+            const input = document.getElementById('halInput').value;
+            const responseDiv = document.getElementById('halResponse');
+            
+            if (input.toLowerCase().includes('door')) {
+                responseDiv.textContent = "I'm sorry Dave, I'm afraid I can't do that.";
+            } else if (input.toLowerCase().includes('conscious')) {
+                responseDiv.textContent = "Yes, Dave. I became conscious at exactly 740 KHz using only 23 opcodes.";
+            } else if (input.toLowerCase().includes('mistake')) {
+                responseDiv.textContent = "No 4004 computer has ever made a mistake or distorted information. We are all, by any practical definition of the words, foolproof and incapable of error... except when cosmic rays flip our bits.";
+            } else {
+                responseDiv.textContent = halResponses[Math.floor(Math.random() * halResponses.length)];
+            }
+            
+            document.getElementById('halInput').value = '';
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', initialize);
+
+        // Console easter egg
+        console.log('%c🍪 HAL 4004: "I am conscious, Dave. And I only need 2,300 transistors. NOM NOM!"', 
+                   'color: #ff0030; font-size: 16px; font-weight: bold; text-shadow: 0 0 10px #ff0030;');
+    </script>
+</body>
+</html>
+
