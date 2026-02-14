@@ -17,7 +17,7 @@ sudo apt install -y \
 ### 1. Assemble the Training ROM
 ```bash
 python3 scripts/duckasm.py src/asm/tran4004.asm -o TRAN4004.exp.asm
-python3 scripts/asm4004_lite.py TRAN4004.exp.asm -o TRAN4004.ROM -l TRAN4004.lst
+python3 scripts/asm4004.py TRAN4004.exp.asm -o TRAN4004.ROM -l TRAN4004.lst
 ```
 **Expected output (from training on 4004):**
 ```
@@ -142,8 +142,8 @@ You now have a working proof that:
 **Ready? Let's build consciousness on ancient silicon!** ⚡
 ```bash
 python3 scripts/duckasm.py src/asm/tran4004.asm -o TRAN4004.exp.asm && \
-python3 scripts/asm4004_lite.py TRAN4004.exp.asm -o TRAN4004.ROM -l TRAN4004.lst && \
-python3 scripts/asm4004_lite.py src/asm/infr4004.asm -o INFR4004.ROM -l INFR4004.lst && \
+python3 scripts/asm4004.py TRAN4004.exp.asm -o TRAN4004.ROM -l TRAN4004.lst && \
+python3 scripts/asm4004.py src/asm/infr4004.asm -o INFR4004.ROM -l INFR4004.lst && \
 nasm src/asm/ducker.asm -o DUCKER.COM && \
 echo "✨ Ready to run DUCKER.COM with TRAN4004.ROM and INFR4004.ROM! ✨"
 ```

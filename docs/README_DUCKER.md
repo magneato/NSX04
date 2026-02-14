@@ -64,8 +64,8 @@ sudo apt install -y g++-13 nasm dosbox-x
 **1. Assemble the 4004 ROMs**
 ```bash
 python3 scripts/duckasm.py src/asm/tran4004.asm -o TRAN4004.exp.asm
-python3 scripts/asm4004_lite.py TRAN4004.exp.asm -o TRAN4004.ROM -l TRAN4004.lst
-python3 scripts/asm4004_lite.py src/asm/infr4004.asm -o INFR4004.ROM -l INFR4004.lst
+python3 scripts/asm4004.py TRAN4004.exp.asm -o TRAN4004.ROM -l TRAN4004.lst
+python3 scripts/asm4004.py src/asm/infr4004.asm -o INFR4004.ROM -l INFR4004.lst
 ```
 **2. Assemble the Emulator**
 ```bash

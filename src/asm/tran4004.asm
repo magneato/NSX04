@@ -32,7 +32,7 @@
 ;  emulator traps (DuckOps) can be layered on top of this ROM via
 ;  the DUCKER.COM emulator if desired; see include/duckops.inc.
 ;
-; SYNTAX: Compatible with asm4004_lite.py and NASM‑style assemblers
+; SYNTAX: Compatible with asm4004.py and NASM‑style assemblers
 
 ;---------------------------------------------------------
 ;  CONSTANTS AND REGISTERS

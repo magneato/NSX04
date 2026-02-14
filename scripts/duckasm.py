@@ -26,7 +26,7 @@ Supported pseudo‑ops (case‑insensitive):
 
 Lines that do not match these patterns are passed through unchanged.  This
 script does not perform any assembly itself; it merely prepares a file
-for consumption by a 4004 assembler such as `asm4004_lite.py`.
+for consumption by a 4004 assembler such as `asm4004.py`.
 
 Usage:
 
