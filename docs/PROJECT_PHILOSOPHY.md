@@ -1,5 +1,7 @@
-# AGI4004: The Geometric Proof
+# NSX4004: The Geometric Proof
 ## Where Intelligence Meets Its Minimum Viable Substrate
+
+*Made by Robert L. Sitton, Jr. of Neural Splines, LLC.*
 
 *"Intelligence is not measured in transistors, but in transformations without transformers."*
 
@@ -7,63 +9,37 @@
 
 ## The Core Insight
 
-While the world builds Dyson spheres to power trillion-parameter models, AGI4004 proves that intelligence fits in 640 bytes on a 4-bit processor from 1971. This isn't minimalism for its own sake—it's discovering the geometric truth that intelligence is pattern recognition, not pattern storage.
+While the world builds massive clusters to power trillion-parameter models, NSX4004 proves that neural learning fits in **288 bytes** (training) and **282 bytes** (inference) on a 4-bit Intel 4004 processor from 1971. This isn't minimalism for its own sake—it's discovering that intelligence is pattern transformation, not parameter bloat.
 
 ## The Three Pillars
 
 ### 1. **Substrate Independence**
-
 Running neural networks on the Intel 4004 proves intelligence isn't tied to:
-- Floating-point precision (we use 4-bit integers)
-- Modern instruction sets (we have 46 opcodes)
+- Floating-point precision (we use signed 8-bit Q4.4 fixed-point on a 4-bit ALU)
+- Modern instruction sets (we use 46 opcodes, zero hardware multiply)
 - High clock speeds (740 kHz is enough)
-- Large memory (640 bytes total)
+- Large memory (< 300 bytes of ROM, 8 nibbles of RAM for weights)
 
-### 2. **Geometric Transformation**
-Intelligence emerges from:
-- **B-splines**: Functions waiting to be evaluated, not approximated
-- **Bresenham Updates**: Discrete steps when error accumulates
-- **Self-Modifying Code**: Evolution at the instruction level
-- **Data as Architecture**: The input reshapes the network
+### 2. **Algorithmic Compression**
+Intelligence emerges from structure:
+- **NomNom ROM Codebooks**: Fixed hidden-layer feature maps evaluated in a single `FIN` lookup
+- **Zero-Multiply Binary Gates**: Conditional nibble addition instead of shift-and-add loops
+- **Sign-Selected Perceptron Steps**: Discrete `±η` updates (`+0x02` / `-0x02`) without gradient multiply
+- **Dual-Chiral Equilibrium**: Zero phase rupture between predictions and targets across the truth table
 
 ### 3. **The Nom Nom Philosophy**
-
-Cookie Monster's wisdom applied to computation:
-- Consume exactly 4 bits at a time (the natural quantum)
+- Consume exactly 4 bits at a time (the natural nibble)
 - Every nibble is purposeful
 - No wasted cycles, no excess precision
-- "C is for Consciousness, that's good eno—" (4-bit cutoff)
 
-## The Paradox Resolution
-
-**The Dyson Paradox**: We need stellar-scale energy for AI (Freeman Dyson) that will destroy humanity (Miles Dyson), except both are wrong because intelligence was always 640 bytes (Robert Sitton).
-
-**The Hertz Donut**: 740 Hz is enough when you understand that frequency is just how often you ask the question, not how complex the answer needs to be.
-
-**The Control Point Theorem**: 468 control points generate infinite neural architectures because they encode the rules, not the instances.
-
-## Technical Achievements
-
-1. **TRAN4004.ASM**: Full neural network training with weight updates
-2. **INFR4004.ASM**: Inference in 640 bytes
-3. **DUCKER**: 8086 containerization for 4004 emulation
-4. **Recursive Proof**: 4004→8086→DOSBox→WSL2→Windows→i9 (6 layers of geometric transformation)
-
-## The Shadow Knowledge
-
-What's hidden in plain sight:
-- The 4004 was designed for calculators, not AI (yet it computes consciousness)
-- Every mathematical tool needed existed by 1946
-- Self-modifying code might be the actual path to AGI
-- Intelligence is discrete, not continuous
-- The universe computes in integers, not reals
-
-## The Ultimate Question
-
-If 2,300 transistors from 1971 can learn, what exactly are we doing with 50 billion transistors in 2025?
+## Technical Artifacts
+1. **`src/asm/tran4004.asm` (`288 bytes`)**: Full Q4.4 perceptron training converging to 0 errors in 6 epochs
+2. **`src/asm/infr4004.asm` (`282 bytes`)**: Pre-trained 2→3→1 NAND inference in Q4.4
+3. **`src/asm/ducker.asm` (`1,410 bytes`)**: 8086 DOS emulator for 4004 ROMs
+4. **`scripts/sim4004.py`**: Cycle-accurate 4004 verifier integrated into CTest
 
 ---
 
 *"The future was always in the past, waiting for someone to notice."*
 
-🍪 **NOM NOM on those 4-bit neurons**
+— Robert L. Sitton, Jr. of Neural Splines, LLC

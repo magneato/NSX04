@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+# =========================================================
+# NSX4004 Project - Intel 4004 Neural Network Experiments
+# File: scripts/asm4004.py
+# Author: Robert L. Sitton, Jr. of Neural Splines, LLC
+# Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC
+# License: GNU AGPL-3.0-or-later
+# =========================================================
+
 import argparse
 import sys
 import re
@@ -471,7 +480,7 @@ class Assembler:
                     lo = self.resolve_value(parts[2])
                     imm = ((hi & 0x0F) << 4) | (lo & 0x0F)
                 
-                bytes_out.append(opcode | (pair & 0x07))
+                bytes_out.append(opcode | ((pair & 0x07) << 1))
                 bytes_out.append(imm & 0xFF)
             
             else:
@@ -479,7 +488,7 @@ class Assembler:
                 pair = self.resolve_register_pair(operand_str)
                 if pair is None:
                     raise ValueError(f"Line {self.line_number}: Invalid register pair: '{operand_str}'")
-                bytes_out.append(opcode | (pair & 0x07))
+                bytes_out.append(opcode | ((pair & 0x07) << 1))
         
         elif op_type == OperandType.IMMEDIATE:
             val = self.resolve_value(operand_str)

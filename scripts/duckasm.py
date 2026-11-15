@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
+# =========================================================
+# NSX4004 Project - Intel 4004 Neural Network Experiments
+# File: scripts/duckasm.py
+# Author: Robert L. Sitton, Jr. of Neural Splines, LLC
+# Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC
+# License: GNU AGPL-3.0-or-later
+# =========================================================
 """
-duckasm.py — Simple preprocessor for Intel 4004 assembly with DuckOps.
+duckasm.py — Simple preprocessor for Intel 4004 assembly with DuckOps.
 
 This preprocessor expands a few custom pseudo‑operations (DuckOps) into
 standard 4004 assembly. DuckOps allow the 4004 code to call out to the

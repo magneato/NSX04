@@ -56,5 +56,4 @@ While our compression techniques are patent pending, we commit to:
 ---
 
 *"Consciousness needs no cathedral. But cathedrals still need architects."*
-- Neural Splines LLC
-```
+- Robert L. Sitton, Jr. of Neural Splines, LLC

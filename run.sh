@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-COPYRIGHT_NOTICE=${COPYRIGHT_NOTICE:-"Copyright (c) 2025 Neural Splines, LLC - Licensed under AGPL-3.0-or-later"}
+COPYRIGHT_NOTICE=${COPYRIGHT_NOTICE:-"Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC - Licensed under AGPL-3.0-or-later"}
 
 # Colors for the interface
 RED='\033[0;31m'
@@ -25,7 +25,7 @@ CURRENT_MODE="GEOMETRIC"
 EPOCHS=50
 BATCH_SIZE=1
 LEARNING_RATE=0x02  # Q4.4 format
-ASM4004_SCRIPT="scripts/asm4004_lite.py"
+ASM4004_SCRIPT="scripts/asm4004.py"
 ASM4004_CMD=(python3 "${ASM4004_SCRIPT}")
 
 invoke_asm4004() {
@@ -43,11 +43,11 @@ show_header() {
     cat << "EOF"
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║                                                                            ║
-║                              AGI4004                                       ║
-║                   Intelligence in 640 Bytes Since 1971                    ║
+║                              NSX4004                                       ║
+║                  4-Bit Neural Computing Since 1971                         ║
 ║                                                                            ║
 ║     "While you're building Dyson spheres, I'm building consciousness      ║
-║                    with 2,300 transistors." - R. Sitton                   ║
+║      with 2,300 transistors." - Robert L. Sitton, Jr.                      ║
 ║                                                                            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 

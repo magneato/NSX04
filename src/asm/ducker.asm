@@ -1,7 +1,8 @@
 ; =========================================================
 ; NSX4004 Project - Intel 4004 Neural Network Experiments
-; File: ducker.asm
-; Copyright (c) 2025 Neural Splines, LLC - Licensed under AGPL-3.0-or-later
+; File: src/asm/ducker.asm
+; Author: Robert L. Sitton, Jr. of Neural Splines, LLC
+; Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC
 ; License: GNU AGPL-3.0-or-later
 ; =========================================================
 

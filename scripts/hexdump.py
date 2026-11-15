@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
+# =========================================================
+# NSX4004 Project - Intel 4004 Neural Network Experiments
+# File: scripts/hexdump.py
+# Author: Robert L. Sitton, Jr. of Neural Splines, LLC
+# Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC
+# License: GNU AGPL-3.0-or-later
+# =========================================================
 """Simple hex dump utility.
 
 Usage:
-  python3 python/utils/hexdump.py <file>
+  python3 scripts/hexdump.py <file>
 """
 
 import sys

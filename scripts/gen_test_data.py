@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
-
-# Neural Splines, LLC 2025 Patent Pending by Robert Sitton (SN)
+# =========================================================
+# NSX4004 Project - Intel 4004 Neural Network Experiments
+# File: scripts/gen_test_data.py
+# Author: Robert L. Sitton, Jr. of Neural Splines, LLC
+# Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC
+# License: GNU AGPL-3.0-or-later
+# =========================================================
 
 """
 ═══════════════════════════════════════════════════════════════════════════

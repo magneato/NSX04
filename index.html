@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSX4004 — 4-Bit Neural Computing Since 1971</title>
+  <meta name="description" content="NSX4004: Training and running neural networks on an Intel 4004 (2,300 transistors, 4-bit ALU, 46 opcodes) emulated on 8086.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-0: #020617;
+      --bg-1: #0b1324;
+      --bg-card: rgba(15, 23, 42, 0.78);
+      --border: rgba(34, 211, 238, 0.22);
+      --border-strong: rgba(34, 211, 238, 0.55);
+      --cyan-300: #67e8f9;
+      --cyan-400: #22d3ee;
+      --cyan-500: #06b6d4;
+      --blue-400: #60a5fa;
+      --green-400: #4ade80;
+      --amber-400: #fbbf24;
+      --pink-400: #f472b6;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Roboto Mono', ui-monospace, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(6, 182, 212, 0.14), transparent 42%),
+        radial-gradient(circle at 82% 24%, rgba(59, 130, 246, 0.12), transparent 40%),
+        linear-gradient(160deg, var(--bg-0) 0%, #061224 55%, var(--bg-0) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    #gridCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px 72px;
+    }
+
+    /* Top bar */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .chip-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(59, 130, 246, 0.15));
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan-300);
+      box-shadow: 0 0 18px rgba(34, 211, 238, 0.18);
+    }
+
+    .brand-title {
+      font-family: var(--mono);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 1.05rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.18s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan-300);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 44px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 40px;
+      }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(34, 211, 238, 0.08);
+      color: var(--cyan-300);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      margin-bottom: 18px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-400);
+      box-shadow: 0 0 10px var(--green-400);
+      animation: pulse 2.2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 4.5vw, 3.4rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      background: linear-gradient(90deg, #fff 0%, var(--cyan-300) 55%, var(--blue-400) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.08rem;
+      color: #cbd5e1;
+      max-width: 58ch;
+      margin-bottom: 26px;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan-500), #2563eb);
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(6, 182, 212, 0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--cyan-300);
+      border-color: var(--border-strong);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(34, 211, 238, 0.12);
+    }
+
+    /* Stats strip */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 12px 0 54px;
+    }
+
+    @media (max-width: 760px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--cyan-300);
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* Section headings */
+    section {
+      margin-top: 56px;
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-family: var(--mono);
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .sec-sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 820px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .demo-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 9px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .badge-cyan {
+      background: rgba(34, 211, 238, 0.14);
+      color: var(--cyan-300);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+    }
+
+    .badge-amber {
+      background: rgba(251, 191, 36, 0.14);
+      color: var(--amber-400);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    /* Interactive Q4.4 Sandbox */
+    .sandbox {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.92));
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .sandbox-title {
+      font-family: var(--mono);
+      font-size: 0.86rem;
+      color: var(--cyan-300);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    }
+
+    .inputs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .toggle-btn {
+      font-family: var(--mono);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(30, 41, 59, 0.6);
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .toggle-btn.active {
+      border-color: var(--cyan-400);
+      background: rgba(34, 211, 238, 0.15);
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.18);
+    }
+
+    .toggle-btn .lbl {
+      font-size: 0.76rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    .toggle-btn .val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .sim-box {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      background: rgba(2, 6, 23, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .sim-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.1);
+    }
+
+    .sim-line:last-child {
+      border-bottom: none;
+      padding-top: 8px;
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .out-1 { color: var(--green-400); }
+    .out-0 { color: var(--amber-400); }
+
+    /* Code block */
+    .code-wrap {
+      position: relative;
+      background: #040914;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--cyan-300);
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--cyan-400);
+    }
+
+    /* File table */
+    .file-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 10px;
+      flex-wrap: wrap;
+    }
+
+    .file-path {
+      font-family: var(--mono);
+      color: var(--cyan-300);
+      font-size: 0.88rem;
+    }
+
+    .file-desc {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* Ducker photo card */
+    .ducker-preview {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .ducker-preview {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ducker-preview img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    footer {
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(148, 163, 184, 0.14);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    footer a {
+      color: var(--cyan-300);
+      text-decoration: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dot { animation: none; }
+      #gridCanvas { display: none; }
+      .btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gridCanvas" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#">
+        <div class="chip-icon">4004</div>
+        <span class="brand-title">NSX4004</span>
+      </a>
+      <div class="nav-links">
+        <a href="#demos">Interactive Demos</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="docs/TLDR.md">Docs</a>
+        <a href="demo/intel4004.html">Emulator</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <div class="pill">
+          <span class="dot"></span>
+          <span>1971 Intel 4004 • 740 KHz • Q4.4 Fixed-Point</span>
+        </div>
+        <h1>Neural Learning in 288 Bytes Since 1971</h1>
+        <p>
+          NSX4004 proves neural learning doesn't require billions of transistors.
+          Train and run a 2→3→1 Extreme Learning Machine &amp; perceptron on a
+          <strong>4-bit Intel 4004</strong> (2,300 transistors, 46 opcodes),
+          hosted inside <strong>DUCKER</strong>—a custom 16-bit 8086 DOS emulator.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="demo/intel4004.html">Launch 4004 Emulator</a>
+          <a class="btn btn-secondary" href="demo/nsx4004.html">Open Consciousness Engine</a>
+        </div>
+      </div>
+
+      <aside class="sandbox" aria-label="Interactive Q4.4 NAND Perceptron Sandbox">
+        <div class="sandbox-title">
+          <span>Q4.4 NAND PERCEPTRON</span>
+          <span style="color: var(--muted)">2 → 3 → 1 ELM</span>
+        </div>
+        <div class="inputs-row">
+          <button type="button" class="toggle-btn" id="btnX1" onclick="toggleInput(1)">
+            <span class="lbl">INPUT X1</span>
+            <span class="val" id="valX1">0 (0x00)</span>
+          </button>
+          <button type="button" class="toggle-btn" id="btnX2" onclick="toggleInput(2)">
+            <span class="lbl">INPUT X2</span>
+            <span class="val" id="valX2">0 (0x00)</span>
+          </button>
+        </div>
+        <div class="sim-box" id="simOutput"></div>
+      </aside>
+    </header>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val">2,300</div>
+        <div class="stat-label">Transistors (Intel 4004)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">4-bit</div>
+        <div class="stat-label">ALU &amp; Nibble Data Bus</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">46</div>
+        <div class="stat-label">Native CPU Opcodes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">Q4.4</div>
+        <div class="stat-label">Fixed-Point Neural Math</div>
+      </div>
+    </div>
+
+    <section id="demos">
+      <div class="sec-head">
+        <h2>Interactive Browser Demos</h2>
+        <span class="sec-sub">Zero install — runs directly in your browser</span>
+      </div>
+      <div class="grid-2">
+        <article class="card demo-card">
+          <div>
+            <span class="badge badge-cyan">Live CPU Simulator</span>
+            <h3>DUCKER 4004 Emulator</h3>
+            <p>
+              Step through Intel 4004 machine code at 740 KHz. Inspect all 16
+              4-bit index registers, program ROM, RAM banks, call stack, and
+              load custom ROM programs in real time.
+            </p>
+          </div>
+          <div>
+            <a class="btn btn-primary" href="demo/intel4004.html">Open DUCKER 4004 →</a>
+          </div>
+        </article>
+
+        <article class="card demo-card">
+          <div>
+            <span class="badge badge-amber">Neural Visualizer</span>
+            <h3>NSX4004 Consciousness Engine</h3>
+            <p>
+              Explore how a 2,300-transistor 4-bit processor executes neural
+              training and inference using Q4.4 fixed-point arithmetic and
+              Extreme Learning Machine projections.
+            </p>
+          </div>
+          <div>
+            <a class="btn btn-secondary" href="demo/nsx4004.html">Open Consciousness Engine →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="sec-head">
+        <h2>Project Architecture</h2>
+        <span class="sec-sub">4004 Assembly + 8086 DOS Emulator + Python Toolchain</span>
+      </div>
+
+      <div class="file-list">
+        <div class="file-item">
+          <span class="file-path">src/asm/tran4004.asm</span>
+          <span class="file-desc">4004 training ROM (288 bytes — converges on NAND in 6 epochs)</span>
+        </div>
+        <div class="file-item">
+          <span class="file-path">src/asm/infr4004.asm</span>
+          <span class="file-desc">4004 inference ROM (282 bytes — zero-multiply Q4.4 forward pass)</span>
+        </div>
+        <div class="file-item">
+          <span class="file-path">src/asm/ducker.asm</span>
+          <span class="file-desc">8086 DOS emulator (<code>DUCKER.COM</code>, 1,410 bytes)</span>
+        </div>
+        <div class="file-item">
+          <span class="file-path">scripts/asm4004.py</span>
+          <span class="file-desc">Two-pass Python Intel 4004 assembler with listing output</span>
+        </div>
+        <div class="file-item">
+          <span class="file-path">scripts/sim4004.py</span>
+          <span class="file-desc">Cycle-accurate 4004 simulator &amp; CTest verifier</span>
+        </div>
+      </div>
+
+      <div class="card ducker-preview" style="margin-top: 20px;">
+        <img src="docs/ducker.jpg" alt="DUCKER 4004 emulator running on vintage hardware">
+        <div>
+          <span class="badge badge-cyan">Substrate Independence</span>
+          <h3>4004 → 8086 → DOS</h3>
+          <p style="margin-bottom: 12px;">
+            Built with CMake, NASM, and Python 3. Read the architecture notes
+            for the full story behind Q4.4 fixed-point learning on 1971 silicon.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-secondary" href="docs/TLDR.md">TL;DR Guide</a>
+            <a class="btn btn-secondary" href="docs/BUILD_GUIDE.md">Build Guide</a>
+            <a class="btn btn-secondary" href="docs/PROJECT_PHILOSOPHY.md">Philosophy</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quickstart">
+      <div class="sec-head">
+        <h2>Build &amp; Test (Ubuntu 24.04)</h2>
+        <span class="sec-sub">Generates ROMs in <code>output/roms/</code> and DOS binaries in <code>output/bins/</code></span>
+      </div>
+      <div class="code-wrap">
+        <button class="copy-btn" type="button" onclick="copyBuild(this)">Copy</button>
+        <pre id="buildSnippet">bash setup.sh
+bash scripts/build.sh
+bash scripts/test.sh</pre>
+      </div>
+    </section>
+
+    <footer>
+      <span>Made by Robert L. Sitton, Jr. of Neural Splines, LLC &bull; Licensed under AGPL-3.0-or-later</span>
+      <span>
+        <a href="README.md">README</a> ·
+        <a href="LICENSE">LICENSE</a> ·
+        <a href="demo/intel4004.html">Emulator</a>
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    // Interactive Q4.4 NAND Perceptron Sandbox
+    // Q4.4 representation: 1.0 = 16 (0x10), 0.5 = 8 (0x08), 0.0 = 0 (0x00)
+    const state = { x1: 0, x2: 0 };
+
+    function toHex8(n) {
+      const v = ((n % 256) + 256) % 256;
+      return '0x' + v.toString(16).toUpperCase().padStart(2, '0');
+    }
+
+    function toggleInput(idx) {
+      if (idx === 1) state.x1 = state.x1 ? 0 : 1;
+      else state.x2 = state.x2 ? 0 : 1;
+      renderSandbox();
+    }
+
+    function renderSandbox() {
+      const b1 = document.getElementById('btnX1');
+      const b2 = document.getElementById('btnX2');
+      b1.classList.toggle('active', state.x1 === 1);
+      b2.classList.toggle('active', state.x2 === 1);
+      document.getElementById('valX1').textContent = state.x1 ? '1 (0x10)' : '0 (0x00)';
+      document.getElementById('valX2').textContent = state.x2 ? '1 (0x10)' : '0 (0x00)';
+
+      // Fixed ELM hidden features + trained perceptron output weights for NAND
+      // h0 = step(x1 + x2 >= 1.5), h1 = step(x1 >= 0.5), h2 = step(x2 >= 0.5)
+      const h0 = (state.x1 && state.x2) ? 16 : 0;
+      const h1 = state.x1 ? 16 : 0;
+      const h2 = state.x2 ? 16 : 0;
+
+      // Output weights in Q4.4: w0 = -1.5 (-24), w1 = -0.25 (-4), w2 = -0.25 (-4), bias = +1.0 (+16)
+      // Sum = bias + (h0*w0 + h1*w1 + h2*w2)/16
+      const sumQ44 = 16 + ((h0 * -24 + h1 * -4 + h2 * -4) >> 4);
+      const y = sumQ44 >= 8 ? 1 : 0;
+
+      const outClass = y ? 'out-1' : 'out-0';
+      document.getElementById('simOutput').innerHTML = `
+        <div class="sim-line"><span>Hidden H[0..2] (Q4.4)</span><span>[${toHex8(h0)}, ${toHex8(h1)}, ${toHex8(h2)}]</span></div>
+        <div class="sim-line"><span>Weighted Sum (Q4.4)</span><span>${sumQ44} (${(sumQ44 / 16).toFixed(2)})</span></div>
+        <div class="sim-line"><span>Threshold (&ge; 0x08 / 0.50)</span><span>${y ? 'PASS' : 'BELOW'}</span></div>
+        <div class="sim-line"><span>NAND(X1, X2) Output</span><span class="${outClass}">${y} (${y ? '0x10' : '0x00'})</span></div>
+      `;
+    }
+
+    function copyBuild(btn) {
+      const text = document.getElementById('buildSnippet').textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+        });
+      }
+    }
+
+    // Subtle animated silicon bus background
+    (function initCanvas() {
+      const canvas = document.getElementById('gridCanvas');
+      if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const ctx = canvas.getContext('2d');
+      let w = 0, h = 0;
+      const nodes = [];
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 28; i++) {
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.6 + 0.8
+        });
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(34, 211, 238, 0.65)';
+        ctx.strokeStyle = 'rgba(34, 211, 238, 0.12)';
+        ctx.lineWidth = 1;
+
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          a.x = (a.x + a.vx + w) % w;
+          a.y = (a.y + a.vy + h) % h;
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < 22000) {
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+
+    renderSandbox();
+  </script>
+</body>
+</html>

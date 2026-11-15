@@ -1,3 +1,11 @@
+# =========================================================
+# NSX4004 Project - Intel 4004 Neural Network Experiments
+# File: CMakeLists.txt
+# Author: Robert L. Sitton, Jr. of Neural Splines, LLC
+# Copyright (c) 2025 Robert L. Sitton, Jr. of Neural Splines, LLC
+# License: GNU AGPL-3.0-or-later
+# =========================================================
+
 cmake_minimum_required(VERSION 3.20)
 project(NSX4004 LANGUAGES ASM_NASM)
 
@@ -17,7 +25,7 @@ add_custom_target(make_out_dir
 # -----------------------
 # Python assembler + ROMs
 # -----------------------
-set(ASM4004_SCRIPT ${CMAKE_SOURCE_DIR}/scripts/asm4004_lite.py)
+set(ASM4004_SCRIPT ${CMAKE_SOURCE_DIR}/scripts/asm4004.py)
 
 set(ROM_SOURCES
   ${CMAKE_SOURCE_DIR}/src/asm/tran4004.asm
@@ -33,7 +41,7 @@ foreach(SRC ${ROM_SOURCES})
     COMMAND ${CMAKE_COMMAND} -E make_directory ${ROMS_DIR}
     COMMAND ${Python3_EXECUTABLE} ${ASM4004_SCRIPT} ${SRC} -q -o ${OUT_FILE}
     DEPENDS ${ASM4004_SCRIPT} ${SRC}
-    COMMENT "Assembling ${OUT_FILE} from ${SRC} using asm4004_lite.py"
+    COMMENT "Assembling ${OUT_FILE} from ${SRC} using asm4004.py"
     VERBATIM
   )
   list(APPEND ROM_OUTPUTS ${OUT_FILE})
@@ -57,6 +65,18 @@ add_custom_command(
   VERBATIM
 )
 add_custom_target(ducker ALL DEPENDS ${DUCKER_COM})
+
+set(HELL8086_SRC ${CMAKE_SOURCE_DIR}/src/asm/hell8086.asm)
+set(HELL8086_COM ${BINS_DIR}/HELL8086.COM)
+add_custom_command(
+  OUTPUT ${HELL8086_COM}
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${BINS_DIR}
+  COMMAND ${NASM_EXECUTABLE} -f bin -o ${HELL8086_COM} ${HELL8086_SRC}
+  DEPENDS ${HELL8086_SRC}
+  COMMENT "Assembling HELL8086.COM from ${HELL8086_SRC}"
+  VERBATIM
+)
+add_custom_target(hell8086 ALL DEPENDS ${HELL8086_COM})
 
 # -----------------------
 # CTest hooks
@@ -87,6 +107,12 @@ if (BUILD_TESTING)
     COMMAND ${Python3_EXECUTABLE} ${ASM4004_SCRIPT}
             ${CMAKE_SOURCE_DIR}/src/asm/infr4004.asm
             -q -o ${TEST_ARTIFACT_DIR}/INFR4004.rom)
+  add_test(NAME sim4004_train_nand
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/sim4004.py
+            ${ROMS_DIR}/TRAN4004.ROM --verify-train)
+  add_test(NAME sim4004_infer_nand
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/sim4004.py
+            ${ROMS_DIR}/INFR4004.ROM --verify-infer)
 endif()
 
 # Summary

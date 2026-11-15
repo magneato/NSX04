@@ -1,69 +1,79 @@
 # NSX4004
 
-Modern, educational project structure for Intel 4004 + 8086 assembly plus Python utilities, built with a single CMake setup targeting Ubuntu 24.04. Includes convenient setup/build/test scripts and CI.
+*Made by Robert L. Sitton, Jr. of Neural Splines, LLC — Licensed under AGPL-3.0-or-later.*
+
+Educational project for **Intel 4004 + 8086 assembly** neural network experiments, featuring a two-pass Python 4004 assembler, a cycle-accurate 4004 simulator/verifier, an 8086 DOS emulator (`DUCKER.COM`), interactive browser demos, and CMake/CTest CI targeting Ubuntu 24.04.
 
 ## Requirements (Ubuntu 24.04)
 - `cmake` (>= 3.20)
 - `python3`
 - `nasm`
 
-Install via scripts/setup.sh or manually:
+Install via `setup.sh` or manually:
 
-```
+```bash
 sudo apt-get update && sudo apt-get install -y cmake build-essential nasm
 ```
 
 ## Layout
-```
+```text
 .
+├── index.html               # GitHub Pages landing page
+├── .nojekyll                # Disable Jekyll processing for GitHub Pages
+├── demo/                    # Interactive browser demos
+│   ├── intel4004.html       # DUCKER 4004 interactive CPU emulator
+│   └── nsx4004.html         # NSX4004 Consciousness Engine demo
 ├── src/
-│   ├── asm/             # Assembly sources
-│   │   ├── tran4004.asm     # 4004 training ROM source
-│   │   ├── infr4004.asm     # 4004 inference ROM source
-│   │   ├── ducker.asm       # 8086 COM (educational emulator wrapper)
-│   │   └── hell8086.asm     # 8086 COM demo
-├── scripts/             # Python utilities and build helpers
-│   ├── asm4004_lite.py
-│   ├── duckasm.py
-│   ├── hexdump.py
-│   └── ...
-├── docs/                # Notes and guidance
+│   └── asm/                 # Assembly sources
+│       ├── tran4004.asm     # 4004 training ROM (288 bytes)
+│       ├── infr4004.asm     # 4004 inference ROM (282 bytes)
+│       ├── ducker.asm       # 8086 DOS emulator (1,410 bytes)
+│       └── hell8086.asm     # 8086 COM demo (45 bytes)
+├── scripts/                 # Python utilities and build helpers
+│   ├── asm4004.py           # Two-pass Intel 4004 assembler
+│   ├── sim4004.py           # Cycle-accurate 4004 simulator & verifier
+│   ├── duckasm.py           # DuckOps preprocessor
+│   ├── gen_test_data.py     # Synthetic MNIST-like test data generator
+│   ├── hexdump.py           # Hex dump utility
+│   ├── build.sh / test.sh / clean.sh
+├── docs/                    # Architecture notes & guides
+├── test/asmcases/           # Assembler regression tests
 ├── CMakeLists.txt
-├── build.sh / run.sh / setup.sh  # Convenience scripts
-├── .github/workflows/ci.yml      # CI on ubuntu-24.04
-└── .gitignore
+├── build.sh / test.sh / run.sh / setup.sh
+└── .github/workflows/ci.yml
 ```
 
 ## Quickstart
-```
-bash scripts/setup.sh
+```bash
+bash setup.sh
 bash scripts/build.sh
 bash scripts/test.sh
 ```
 
-Artifacts are placed in `out/`:
-- `TRAN4004.ROM`, `INFR4004.ROM` (4004 ROMs assembled via `scripts/asm4004_lite.py`)
-- `hell8086.com` (flat 16-bit COM binary for DOS)
+Artifacts are placed in `output/`:
+- `output/roms/TRAN4004.ROM` (288 bytes — converges on NAND in 6 epochs, 5,876 cycles)
+- `output/roms/INFR4004.ROM` (282 bytes — verified on all 4 NAND input pairs)
+- `output/bins/DUCKER.COM` (1,410 bytes — 16-bit DOS 4004 emulator)
+- `output/bins/HELL8086.COM` (45 bytes — 16-bit DOS demo)
 
-Note: 8086 `.com` targets are built for educational purposes and run under DOS or DOS emulators (e.g., DOSBox); they do not run natively on Ubuntu.
+Note: 8086 `.COM` targets run under DOS or DOS emulators (e.g., `dosbox-x`); they do not run natively on Ubuntu.
 
-## CMake Overview
+## CMake & CTest Overview
 - Root `CMakeLists.txt` defines:
-  - Custom NASM rule producing `out/hell8086.com`
-  - Custom commands to assemble `out/TRAN4004.ROM` and `out/INFR4004.ROM` via the Python assembler
-  - Aggregate target: `roms`
+  - Custom NASM rules producing `output/bins/DUCKER.COM` and `output/bins/HELL8086.COM`
+  - Custom commands assembling `output/roms/TRAN4004.ROM` and `output/roms/INFR4004.ROM` via `scripts/asm4004.py`
+  - 7 CTest checks: 5 assembler tests (`asm4004_*`) + 2 full-execution 4004 simulator verifications (`sim4004_train_nand`, `sim4004_infer_nand`)
 
-## Assembler Notes (asm4004_lite.py)
+## Assembler Notes (`scripts/asm4004.py`)
 - Directives: `ORG`, `EQU`, `DB`, `DW`
-- Labels: case-insensitive; numbers: decimal, `0x..`, `$..`, `..h`
-- FIM forms supported for convenience:
+- Labels: case-insensitive; numbers: decimal, `0x..`, `$..`, `..h`, `0b..`
+- `FIM` forms supported:
   - `FIM Rpair, data` (standard)
   - `FIM Rpair, hi, lo` (packs two 4-bit nibbles)
-  - `FIM Reven, data` (single even register shorthand)
 
-## Developing
-- Add assembly sources under `src/asm/`. For new 8086 `.asm`, mimic the NASM rule to emit additional `.com` files. For 4004 `.asm`, add to the `ROM_SOURCES` list so they assemble via the Python tool.
-- Python tools live under `scripts/` (no build needed).
+## Interactive Web Demos & GitHub Pages
+- Open `index.html` locally or serve via GitHub Pages (with `.nojekyll` enabled).
+- Includes links to [`demo/intel4004.html`](demo/intel4004.html) and [`demo/nsx4004.html`](demo/nsx4004.html).
 
 ## Docs
-See `docs/` for architecture notes and study material. Add examples, references, and lab exercises as needed.
+See `docs/` for architecture notes and study material (`TLDR.md`, `BUILD_GUIDE.md`, `PROJECT_PHILOSOPHY.md`, `README_DUCKER.md`, `README_TRAN4004.md`, `LICENSE-PATENTS.md`).
